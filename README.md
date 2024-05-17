@@ -3,3 +3,8 @@ A Collection of Js Games to allow people to easily play and modify games cross-p
 
 <b>Current Functional Games:</b>
 - JumpGame: A vertical parcour game  
+
+
+
+<b>Current Work In Progress Games:</b>
+- Chess
