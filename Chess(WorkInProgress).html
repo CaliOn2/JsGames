@@ -18,9 +18,35 @@
             const d = document.getElementById("canvas");
             const c = d.getContext("2d");
 
+            class Figures{
+
+                constructor() {
+
+                }
+
+
+            }
+
+            class Squares{
+
+                constructor() {
+                    this.width = w.maxX / 8;
+                    this.height = w.maxY / 8;
+                }
+
+                display(scale,X,Y) {
+                    c.fillRect(
+                        X * 100 * scale,
+                        Y * 100 * scale,
+                        this.width * scale,
+                        this.height * scale);
+                }
+            }
+
             class World{
 
                 constructor() {
+                    field = [],[];
                     this.maxX = 800;
                     this.maxY = 800;
                 }
