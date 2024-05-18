@@ -18,28 +18,66 @@
             const d = document.getElementById("canvas");
             const c = d.getContext("2d");
 
-            class Figures{
+            class Figure{
 
-                constructor() {
-
+                constructor(color) {
+                    this.color = color;
+                    this.size = 
                 }
-
-
             }
 
-            class Squares{
+            class Pawn extends Figure {
+                constructor(color){
+                    super(color);
+                }
+            }
 
-                constructor() {
+            class Rook extends Figure {
+                constructor(color){
+                    super(color);
+                }
+            }
+
+            class Knight extends Figure {
+                constructor(color){
+                    super(color);
+                }
+            }
+
+            class Bishop extends Figure {
+                constructor(color){
+                    super(color);
+                }
+            }
+
+            class Queen extends Figure {
+                constructor(color){
+                    super(color);
+                }
+            }
+
+            class King extends Figure {
+                constructor(color){
+                    super(color);
+                }
+            }
+
+            class Square{
+
+                constructor(Xnum,Ynum,Figure) {
                     this.width = w.maxX / 8;
                     this.height = w.maxY / 8;
+                    this.X = Xnum * 100;
+                    this.Y = Ynum * 100;
+                    this.Figure = Figure;
                 }
 
-                display(scale,X,Y) {
+                display(scale) {
                     c.fillRect(
                         X * 100 * scale,
                         Y * 100 * scale,
-                        this.width * scale,
-                        this.height * scale);
+                        w.squareWidth * scale,
+                        w.squareHeight * scale);
                 }
             }
 
@@ -49,6 +87,28 @@
                     field = [],[];
                     this.maxX = 800;
                     this.maxY = 800;
+                    this.squareWidth = this.maxX / 8;
+                    this.squareHeight = this.maxY / 8;
+
+                    //          fills the field with squares and their figures
+                    for (let i = 0; i < 8; i++) {
+                        for (let p = 0; p < 8; p++){
+                            //  0 = empty, 1 = pawn 2 = rook 3 = horse 4 = priest 5 = queen 6 =  King  
+                            switch(i,p){
+
+                                case i,1:
+                                    field[i][p] = new Square(i,p,1);
+                                    break;
+                                case 0,0:
+                                    field[i][p] = new Square(i,p,1);
+                                
+                                default:
+                                    field[i][p] = new Square(i,p,0);
+
+                            }
+
+                        }
+                    }
                 }
 
 
