@@ -20,59 +20,113 @@
 
             class Figure{
 
-                constructor(color) {
+                constructor(color, size) {
                     this.color = color;
-                    this.size = 
+                    this.size = size;
                 }
             }
 
             class Pawn extends Figure {
-                constructor(color){
-                    super(color);
+                constructor(color, size){
+                    super(color, size);
+                }
+
+                move(){
+
+                }
+
+                display(){
+
                 }
             }
 
             class Rook extends Figure {
-                constructor(color){
-                    super(color);
+                constructor(color, size){
+                    super(color, size);
+                }
+
+                move(){
+
+                }
+
+                display(){
+
                 }
             }
 
             class Knight extends Figure {
-                constructor(color){
-                    super(color);
+                constructor(color, size){
+                    super(color, size);
+                }
+
+                move(){
+
+                }
+
+                display(){
+
                 }
             }
 
             class Bishop extends Figure {
-                constructor(color){
-                    super(color);
+                constructor(color, size){
+                    super(color, size);
+                }
+
+                move(){
+
+                }
+
+                display(){
+
                 }
             }
 
             class Queen extends Figure {
-                constructor(color){
-                    super(color);
+                constructor(color, size){
+                    super(color, size);
+                }
+
+                move(){
+
+                }
+
+                display(){
+
                 }
             }
 
             class King extends Figure {
-                constructor(color){
-                    super(color);
+                constructor(color, size){
+                    super(color, size);
+                }
+
+                move(){
+
+                }
+
+                display(){
+
                 }
             }
 
             class Square{
 
                 constructor(Xnum,Ynum,Figure) {
-                    this.width = w.maxX / 8;
-                    this.height = w.maxY / 8;
-                    this.X = Xnum * 100;
-                    this.Y = Ynum * 100;
+                    this.X = Xnum;
+                    this.Y = Ynum;
                     this.Figure = Figure;
+                    if (
+                      (this.X % 2 === 0 && this.Y % 2 === 0) ||
+                      (this.X % 2 === 1 && this.Y % 2 === 1)){
+                        this.color = "white";
+                    }else{
+                        this.color = "black";
+                    }
                 }
 
                 display(scale) {
+                    c.fillStyle = this.color;
                     c.fillRect(
                         X * 100 * scale,
                         Y * 100 * scale,
@@ -84,31 +138,36 @@
             class World{
 
                 constructor() {
-                    field = [],[];
+                    this.field = [],[];
                     this.maxX = 800;
                     this.maxY = 800;
                     this.squareWidth = this.maxX / 8;
                     this.squareHeight = this.maxY / 8;
+                    this.scaleValue = d.getBoundingClientRect().width / this.maxX;
 
                     //          fills the field with squares and their figures
-                    for (let i = 0; i < 8; i++) {
-                        for (let p = 0; p < 8; p++){
+                    for (let X = 0; X < 8; X++) {
+                        for (let Y = 0; Y < 8; Y++){
                             //  0 = empty, 1 = pawn 2 = rook 3 = horse 4 = priest 5 = queen 6 =  King  
-                            switch(i,p){
+                            switch(X,Y){
 
-                                case i,1:
-                                    field[i][p] = new Square(i,p,1);
+                                case X,1:
+                                    this.field[X][Y] = new Square(X,Y,new Pawn());
                                     break;
                                 case 0,0:
-                                    field[i][p] = new Square(i,p,1);
-                                
+                                    this.field[X][Y] = new Square(X,Y,new Pawn());
+                                    break;
                                 default:
-                                    field[i][p] = new Square(i,p,0);
+                                    this.field[X][Y] = new Square(X,Y,null);
 
                             }
 
                         }
                     }
+                }
+
+                movePiece(){
+
                 }
 
 
@@ -118,12 +177,6 @@
 
             function game() {setTimeout(() => {
                 // clears the screen
-                c.clearRect(
-                    0,
-                    0,
-                    d.clientWidth,
-                    d.clientHeight
-                )
 
                 requestAnimationFrame(game);
             }, 1)}
