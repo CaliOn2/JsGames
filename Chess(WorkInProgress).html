@@ -138,7 +138,7 @@
             class World{
 
                 constructor() {
-                    this.field = [],[];
+                    this.field = [];
                     this.maxX = 800;
                     this.maxY = 800;
                     this.squareWidth = this.maxX / 8;
@@ -147,15 +147,16 @@
 
                     //          fills the field with squares and their figures
                     for (let X = 0; X < 8; X++) {
+                        this.field[X] = [];
                         for (let Y = 0; Y < 8; Y++){
                             //  0 = empty, 1 = pawn 2 = rook 3 = horse 4 = priest 5 = queen 6 =  King  
                             switch(X,Y){
 
                                 case X,1:
-                                    this.field[X][Y] = new Square(X,Y,new Pawn());
+                                    this.field[X][Y] = new Square(X,Y,null);
                                     break;
                                 case 0,0:
-                                    this.field[X][Y] = new Square(X,Y,new Pawn());
+                                    this.field[X][Y] = new Square(X,Y,null);
                                     break;
                                 default:
                                     this.field[X][Y] = new Square(X,Y,null);
