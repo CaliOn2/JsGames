@@ -35,8 +35,12 @@
 
                 }
 
-                display(){
-
+                display(X,Y,scale){
+                    c.fillStyle = this.color;
+                    c.beginPath();
+                    c.arc((X + 50) * scale, (Y + 50) * scale, size*scale, 0, 2 * Math.PI);
+                    c.fill();
+                    c.stroke();
                 }
             }
 
@@ -113,12 +117,12 @@
             class Square{
 
                 constructor(Xnum,Ynum,Figure) {
-                    this.X = Xnum;
-                    this.Y = Ynum;
+                    this.X = Xnum * 100;
+                    this.Y = Ynum * 100;
                     this.Figure = Figure;
                     if (
-                      (this.X % 2 === 0 && this.Y % 2 === 0) ||
-                      (this.X % 2 === 1 && this.Y % 2 === 1)){
+                      (Xnum % 2 === 0 && Ynum % 2 === 0) ||
+                      (Xnum % 2 === 1 && Ynum % 2 === 1)){
                         this.color = "white";
                     }else{
                         this.color = "black";
@@ -128,10 +132,15 @@
                 display(scale) {
                     c.fillStyle = this.color;
                     c.fillRect(
-                        this.X * 100 * scale,
-                        this.Y * 100 * scale,
+                        this.X * scale,
+                        this.Y * scale,
                         w.squareWidth * scale,
                         w.squareHeight * scale);
+                    if (this.Figure != null){
+                        this.Figure.display(this.X,
+                                            this.y,
+                                            scale);
+                    }
                 }
             }
 
@@ -153,7 +162,7 @@
                             switch(X,Y){
 
                                 case X,1:
-                                    this.field[X][Y] = new Square(X,Y,null);
+                                    this.field[X][Y] = new Square(X,Y,new Pawn("#4d2900",30));
                                     break;
                                 case 0,0:
                                     this.field[X][Y] = new Square(X,Y,null);
