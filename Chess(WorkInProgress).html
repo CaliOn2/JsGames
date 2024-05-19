@@ -38,7 +38,7 @@
                 display(X,Y,scale){
                     c.fillStyle = this.color;
                     c.beginPath();
-                    c.arc((X + 50) * scale, (Y + 50) * scale, size*scale, 0, 2 * Math.PI);
+                    c.arc((X + 50) * scale, (Y + 50) * scale, this.size*scale, 0, 2 * Math.PI);
                     c.fill();
                     c.stroke();
                 }
@@ -137,8 +137,9 @@
                         w.squareWidth * scale,
                         w.squareHeight * scale);
                     if (this.Figure != null){
+                        console.log("Figure_Output");
                         this.Figure.display(this.X,
-                                            this.y,
+                                            this.Y,
                                             scale);
                     }
                 }
@@ -161,7 +162,7 @@
                             //  0 = empty, 1 = pawn 2 = rook 3 = horse 4 = priest 5 = queen 6 =  King  
                             switch(X,Y){
 
-                                case X,1:
+                                case 1,1:
                                     this.field[X][Y] = new Square(X,Y,new Pawn("#4d2900",30));
                                     break;
                                 case 0,0:
