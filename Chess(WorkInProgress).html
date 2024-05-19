@@ -336,6 +336,16 @@
 
                 w.displayWorld();
 
+                document.addEventListener(
+                    'click',
+                    e => {w.movePiece(e.clientX - document.body.getBoundingClientRect().left,e.clientY - document.body.getBoundingClientRect().top);}
+                );
+
+                document.addEventListener(
+                    'dblclick',
+                    e => {w.movePiece(e.clientX - document.body.getBoundingClientRect().left,e.clientY - document.body.getBoundingClientRect().top);}
+                );
+
                 game();
             }
 
