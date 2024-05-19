@@ -35,12 +35,15 @@
 
                 }
 
-                display(Y,X,scale){
+                display(X,Y,scale){
                     c.fillStyle = this.color;
                     c.beginPath();
-                    c.arc((Y + 50) * scale, (X + 50) * scale, this.size*scale, 0, 2 * Math.PI);
+                    c.arc((X + 50) * scale,
+                          (Y + 50) * scale,
+                          (this.size/2.5) * scale,
+                          0,
+                          2 * Math.PI);
                     c.fill();
-                    c.stroke();
                 }
             }
 
@@ -53,8 +56,12 @@
 
                 }
 
-                display(){
-
+                display(X,Y,scale){
+                    c.fillStyle = this.color;
+                    c.fillRect((X + 15) * scale,
+                               (Y + 15) * scale,
+                               this.size,
+                               this.size);
                 }
             }
 
@@ -67,8 +74,20 @@
 
                 }
 
-                display(){
-
+                display(X,Y,scale){
+                    c.fillStyle = this.color;
+                    c.fillRect((X + 40) * scale,
+                               (Y + 15) * scale,
+                               20,
+                               80);
+                    c.fillRect((X + 15) * scale,
+                               (Y + 30) * scale,
+                               80,
+                               10);
+                    c.fillRect((X + 15) * scale,
+                               (Y + 60) * scale,
+                               80,
+                               10);
                 }
             }
 
@@ -81,8 +100,36 @@
 
                 }
 
-                display(){
-
+                display(X,Y,scale){
+                    c.fillStyle = this.color;
+                    c.beginPath();
+                    c.arc((X + 35) * scale,
+                          (Y + 35) * scale,
+                          (this.size/4) * scale,
+                          0,
+                          2 * Math.PI);
+                    c.fill();
+                    c.beginPath();
+                    c.arc((X + 35) * scale,
+                          (Y + 65) * scale,
+                          (this.size/4) * scale,
+                          0,
+                          2 * Math.PI);
+                    c.fill();
+                    c.beginPath();
+                    c.arc((X + 65) * scale,
+                          (Y + 65) * scale,
+                          (this.size/4) * scale,
+                          0,
+                          2 * Math.PI);
+                    c.fill();
+                    c.beginPath();
+                    c.arc((X + 65) * scale,
+                          (Y + 35) * scale,
+                          (this.size/4) * scale,
+                          0,
+                          2 * Math.PI);
+                    c.fill();
                 }
             }
 
@@ -95,8 +142,23 @@
 
                 }
 
-                display(){
-
+                display(X,Y,scale){
+                    c.fillStyle = this.color;
+                    c.fillRect((X + 15) * scale,
+                               (Y + 45) * scale,
+                               80,
+                               10);
+                    c.fillRect((X + 45) * scale,
+                               (Y + 15) * scale,
+                               10,
+                               80);
+                    c.beginPath();
+                    c.arc((X + 50) * scale,
+                          (Y + 50) * scale,
+                          (this.size/3) * scale,
+                          0,
+                          2 * Math.PI);
+                    c.fill();
                 }
             }
 
@@ -106,11 +168,18 @@
                 }
 
                 move(){
-
                 }
 
-                display(){
-
+                display(X,Y,scale){
+                    c.fillStyle = this.color;
+                    c.fillRect((X + 30) * scale,
+                               (Y + 10) * scale,
+                               40,
+                               85);
+                    c.fillRect((X + 10) * scale,
+                               (Y + 30) * scale,
+                               85,
+                               40);
                 }
             }
 
@@ -132,14 +201,14 @@
                 display(scale) {
                     c.fillStyle = this.color;
                     c.fillRect(
-                        this.Y * scale,
                         this.X * scale,
+                        this.Y * scale,
                         w.squareWidth * scale,
                         w.squareHeight * scale);
                     if (this.Figure != null){
                         console.log("Figure_Output");
-                        this.Figure.display(this.Y,
-                                            this.X,
+                        this.Figure.display(this.X,
+                                            this.Y,
                                             scale);
                     }
                 }
@@ -151,7 +220,7 @@
                     this.field = [];
                     this.maxX = 800;
                     this.maxY = 800;
-                    this.figureSize = 30;
+                    this.figureSize = 80;
                     this.squareWidth = this.maxX / 8;
                     this.squareHeight = this.maxY / 8;
                     this.scaleValue = d.getBoundingClientRect().width / this.maxX;
@@ -161,13 +230,34 @@
                         this.field[X] = [];
                         for (let Y = 0; Y < 8; Y++){
                             //  0 = empty, 1 = pawn 2 = rook 3 = horse 4 = priest 5 = queen 6 =  King  
-                            switch(X){
+                            switch(Y){
 
                                 case 0:
-                                    switch(Y){
+                                    switch(X){
                                         case 0:
-                                            this.field[X][Y] = new Square(X,Y,null);
+                                            this.field[X][Y] = new Square(X,Y,new Rook("#4d2900",this.figureSize));
                                             break;
+                                        case 1:
+                                            this.field[X][Y] = new Square(X,Y,new Knight("#4d2900",this.figureSize));
+                                            break;
+                                        case 2:
+                                            this.field[X][Y] = new Square(X,Y,new Bishop("#4d2900",this.figureSize));
+                                            break;
+                                        case 3:
+                                            this.field[X][Y] = new Square(X,Y,new Queen("#4d2900",this.figureSize));
+                                            break;
+                                        case 4:
+                                            this.field[X][Y] = new Square(X,Y,new King("#4d2900",this.figureSize));
+                                            break;
+                                        case 5:
+                                            this.field[X][Y] = new Square(X,Y,new Bishop("#4d2900",this.figureSize));
+                                            break;
+                                        case 6:
+                                            this.field[X][Y] = new Square(X,Y,new Knight("#4d2900",this.figureSize));
+                                            break;
+                                        case 7:
+                                            this.field[X][Y] = new Square(X,Y,new Rook("#4d2900",this.figureSize));
+                                            break;                                        
                                         default:
                                             this.field[X][Y] = new Square(X,Y,null);
                                     }
@@ -181,8 +271,29 @@
                                 case 7:
                                     switch(X){
                                         case 0:
-                                            this.field[X][Y] = new Square(X,Y,null);
+                                            this.field[X][Y] = new Square(X,Y,new Rook("#fcffa6",this.figureSize));
                                             break;
+                                        case 1:
+                                            this.field[X][Y] = new Square(X,Y,new Knight("#fcffa6",this.figureSize));
+                                            break;
+                                        case 2:
+                                            this.field[X][Y] = new Square(X,Y,new Bishop("#fcffa6",this.figureSize));
+                                            break;
+                                        case 3:
+                                            this.field[X][Y] = new Square(X,Y,new Queen("#fcffa6",this.figureSize));
+                                            break;
+                                        case 4:
+                                            this.field[X][Y] = new Square(X,Y,new King("#fcffa6",this.figureSize));
+                                            break;
+                                        case 5:
+                                            this.field[X][Y] = new Square(X,Y,new Bishop("#fcffa6",this.figureSize));
+                                            break;
+                                        case 6:
+                                            this.field[X][Y] = new Square(X,Y,new Knight("#fcffa6",this.figureSize));
+                                            break;
+                                        case 7:
+                                            this.field[X][Y] = new Square(X,Y,new Rook("#fcffa6",this.figureSize));
+                                            break;                                        
                                         default:
                                             this.field[X][Y] = new Square(X,Y,null);
                                     }
