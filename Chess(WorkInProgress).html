@@ -151,6 +151,7 @@
                     this.field = [];
                     this.maxX = 800;
                     this.maxY = 800;
+                    this.figureSize = 30;
                     this.squareWidth = this.maxX / 8;
                     this.squareHeight = this.maxY / 8;
                     this.scaleValue = d.getBoundingClientRect().width / this.maxX;
@@ -163,10 +164,10 @@
                             switch(X,Y){
 
                                 case 1,1:
-                                    this.field[X][Y] = new Square(X,Y,new Pawn("#4d2900",30));
+                                    this.field[X][Y] = new Square(X,Y,new Pawn("#4d2900",this.figureSize));
                                     break;
-                                case 0,0:
-                                    this.field[X][Y] = new Square(X,Y,null);
+                                case 6,6:
+                                    this.field[X][Y] = new Square(X,Y,new Pawn("#fcffa6",this.figureSize));
                                     break;
                                 default:
                                     this.field[X][Y] = new Square(X,Y,null);
