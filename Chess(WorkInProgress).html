@@ -87,7 +87,7 @@
                     super(color, size);
                 }
 
-                move(){
+                move(X,Y){
 
                 }
 
@@ -128,8 +128,8 @@
                 display(scale) {
                     c.fillStyle = this.color;
                     c.fillRect(
-                        X * 100 * scale,
-                        Y * 100 * scale,
+                        this.X * 100 * scale,
+                        this.Y * 100 * scale,
                         w.squareWidth * scale,
                         w.squareHeight * scale);
                 }
@@ -171,6 +171,14 @@
 
                 }
 
+                displayWorld(){
+                    for (let X = 0; X < 8; X++){
+                        for (let Y = 0; Y < 8; Y++){
+                            console.log("X and Y :" + X + Y);
+                            this.field[X][Y].display(this.scaleValue);
+                        }
+                    }
+                }
 
             }
 
@@ -178,7 +186,6 @@
 
             function game() {setTimeout(() => {
                 // clears the screen
-
                 requestAnimationFrame(game);
             }, 1)}
 
@@ -187,20 +194,12 @@
                 d.width = d.clientWidth;
                 d.height = d.clientHeight;
 
-                document.addEventListener(
-                    'pointermove',
-                    e => w.player.setPosition(e.clientX - document.body.getBoundingClientRect().left)
-                );
-
-                document.addEventListener(
-                    'keydown',
-                    e => {
-                        if (e.key === ' ') w.player.jump(w.platformDif, w.platforms);
-                    }
-                );
+                w.displayWorld();
 
                 game();
             }
+
+            main();
         </script>
     </body>
 </html>
