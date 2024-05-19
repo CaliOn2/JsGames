@@ -35,10 +35,10 @@
 
                 }
 
-                display(X,Y,scale){
+                display(Y,X,scale){
                     c.fillStyle = this.color;
                     c.beginPath();
-                    c.arc((X + 50) * scale, (Y + 50) * scale, this.size*scale, 0, 2 * Math.PI);
+                    c.arc((Y + 50) * scale, (X + 50) * scale, this.size*scale, 0, 2 * Math.PI);
                     c.fill();
                     c.stroke();
                 }
@@ -132,14 +132,14 @@
                 display(scale) {
                     c.fillStyle = this.color;
                     c.fillRect(
-                        this.X * scale,
                         this.Y * scale,
+                        this.X * scale,
                         w.squareWidth * scale,
                         w.squareHeight * scale);
                     if (this.Figure != null){
                         console.log("Figure_Output");
-                        this.Figure.display(this.X,
-                                            this.Y,
+                        this.Figure.display(this.Y,
+                                            this.X,
                                             scale);
                     }
                 }
@@ -161,13 +161,31 @@
                         this.field[X] = [];
                         for (let Y = 0; Y < 8; Y++){
                             //  0 = empty, 1 = pawn 2 = rook 3 = horse 4 = priest 5 = queen 6 =  King  
-                            switch(X,Y){
+                            switch(X){
 
-                                case 1,1:
+                                case 0:
+                                    switch(Y){
+                                        case 0:
+                                            this.field[X][Y] = new Square(X,Y,null);
+                                            break;
+                                        default:
+                                            this.field[X][Y] = new Square(X,Y,null);
+                                    }
+                                    break;
+                                case 1:
                                     this.field[X][Y] = new Square(X,Y,new Pawn("#4d2900",this.figureSize));
                                     break;
-                                case 6,6:
+                                case 6:
                                     this.field[X][Y] = new Square(X,Y,new Pawn("#fcffa6",this.figureSize));
+                                    break;
+                                case 7:
+                                    switch(X){
+                                        case 0:
+                                            this.field[X][Y] = new Square(X,Y,null);
+                                            break;
+                                        default:
+                                            this.field[X][Y] = new Square(X,Y,null);
+                                    }
                                     break;
                                 default:
                                     this.field[X][Y] = new Square(X,Y,null);
@@ -178,7 +196,7 @@
                     }
                 }
 
-                movePiece(){
+                movePiece(X,Y,newX,newY){
 
                 }
 
