@@ -224,6 +224,8 @@
                     this.squareWidth = this.maxX / 8;
                     this.squareHeight = this.maxY / 8;
                     this.scaleValue = d.getBoundingClientRect().width / this.maxX;
+                    this.black = "#4d2900";
+                    this.white = "#fcffa6";
 
                     //          fills the field with squares and their figures
                     for (let X = 0; X < 8; X++) {
@@ -235,64 +237,64 @@
                                 case 0:
                                     switch(X){
                                         case 0:
-                                            this.field[X][Y] = new Square(X,Y,new Rook("#4d2900",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Rook(this.black,this.figureSize));
                                             break;
                                         case 1:
-                                            this.field[X][Y] = new Square(X,Y,new Knight("#4d2900",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Knight(this.black,this.figureSize));
                                             break;
                                         case 2:
-                                            this.field[X][Y] = new Square(X,Y,new Bishop("#4d2900",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Bishop(this.black,this.figureSize));
                                             break;
                                         case 3:
-                                            this.field[X][Y] = new Square(X,Y,new Queen("#4d2900",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Queen(this.black,this.figureSize));
                                             break;
                                         case 4:
-                                            this.field[X][Y] = new Square(X,Y,new King("#4d2900",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new King(this.black,this.figureSize));
                                             break;
                                         case 5:
-                                            this.field[X][Y] = new Square(X,Y,new Bishop("#4d2900",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Bishop(this.black,this.figureSize));
                                             break;
                                         case 6:
-                                            this.field[X][Y] = new Square(X,Y,new Knight("#4d2900",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Knight(this.black,this.figureSize));
                                             break;
                                         case 7:
-                                            this.field[X][Y] = new Square(X,Y,new Rook("#4d2900",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Rook(this.black,this.figureSize));
                                             break;                                        
                                         default:
                                             this.field[X][Y] = new Square(X,Y,null);
                                     }
                                     break;
                                 case 1:
-                                    this.field[X][Y] = new Square(X,Y,new Pawn("#4d2900",this.figureSize));
+                                    this.field[X][Y] = new Square(X,Y,new Pawn(this.black,this.figureSize));
                                     break;
                                 case 6:
-                                    this.field[X][Y] = new Square(X,Y,new Pawn("#fcffa6",this.figureSize));
+                                    this.field[X][Y] = new Square(X,Y,new Pawn(this.white,this.figureSize));
                                     break;
                                 case 7:
                                     switch(X){
                                         case 0:
-                                            this.field[X][Y] = new Square(X,Y,new Rook("#fcffa6",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Rook(this.white,this.figureSize));
                                             break;
                                         case 1:
-                                            this.field[X][Y] = new Square(X,Y,new Knight("#fcffa6",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Knight(this.white,this.figureSize));
                                             break;
                                         case 2:
-                                            this.field[X][Y] = new Square(X,Y,new Bishop("#fcffa6",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Bishop(this.white,this.figureSize));
                                             break;
                                         case 3:
-                                            this.field[X][Y] = new Square(X,Y,new Queen("#fcffa6",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Queen(this.white,this.figureSize));
                                             break;
                                         case 4:
-                                            this.field[X][Y] = new Square(X,Y,new King("#fcffa6",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new King(this.white,this.figureSize));
                                             break;
                                         case 5:
-                                            this.field[X][Y] = new Square(X,Y,new Bishop("#fcffa6",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Bishop(this.white,this.figureSize));
                                             break;
                                         case 6:
-                                            this.field[X][Y] = new Square(X,Y,new Knight("#fcffa6",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Knight(this.white,this.figureSize));
                                             break;
                                         case 7:
-                                            this.field[X][Y] = new Square(X,Y,new Rook("#fcffa6",this.figureSize));
+                                            this.field[X][Y] = new Square(X,Y,new Rook(this.white,this.figureSize));
                                             break;                                        
                                         default:
                                             this.field[X][Y] = new Square(X,Y,null);
@@ -308,6 +310,9 @@
                 }
 
                 movePiece(X,Y,newX,newY){
+                    if (newX < 8 && newX >= 0 && newY < 8 && newY >= 0){
+                        
+                    }
 
                 }
 
