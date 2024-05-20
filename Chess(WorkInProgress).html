@@ -18,21 +18,27 @@
             const d = document.getElementById("canvas");
             const c = d.getContext("2d");
 
-            class Figure{
-
-                constructor(color, size) {
+            class Pawn{
+                constructor(color, size){
                     this.color = color;
                     this.size = size;
                 }
-            }
 
-            class Pawn extends Figure {
-                constructor(color, size){
-                    super(color, size);
-                }
-
-                move(){
-
+                possibleMoves(X,Y){
+                    let posmoves = [];
+                    if (this.color === w.black && Y < 7){
+                        if (Y === 1){
+                            posmoves.push({x:X,y:Y+2});
+                        }
+                        posmoves.push({x:X,y:Y+1});
+                    }
+                    if (this.color === w.white > 0){
+                        if (Y === 6){
+                            posmoves.push({x:X,y:Y-2});
+                        }
+                        posmoves.push({x:X,y:Y-1});
+                    }
+                    return posmoves;
                 }
 
                 display(X,Y,scale){
@@ -47,13 +53,21 @@
                 }
             }
 
-            class Rook extends Figure {
+            class Rook{
                 constructor(color, size){
-                    super(color, size);
+                    this.color = color;
+                    this.size = size;
                 }
 
-                move(){
-
+                possibleMoves(X,Y){
+                    let posmoves = [];
+                    for(i = 0; i < 8; i++){
+                        if (i,Y != X,i){
+                            posmoves.push({x:i,y:Y});
+                            posmoves.push({x:X,y:i});
+                        }
+                    }
+                    return posmoves;
                 }
 
                 display(X,Y,scale){
@@ -65,13 +79,47 @@
                 }
             }
 
-            class Knight extends Figure {
+            class Knight{
                 constructor(color, size){
-                    super(color, size);
+                    this.color = color;
+                    this.size = size;
                 }
 
-                move(){
-
+                possibleMoves(X,Y){
+                    let posmoves = [];
+                    if (X+1 < 8){
+                        if (Y+2 < 8){
+                            posmoves.push({x:X+1,y:Y+2});
+                        }
+                        if (y-2 >= 0){
+                            posmoves.push({x:X+1,y:Y-2});
+                        }
+                    }
+                    if (X-1 >= 0){
+                        if (Y+2 < 8){
+                            posmoves.push({x:X-1,y:Y+2});
+                        }
+                        if (Y-2 >= 0){
+                            posmoves.push({x:X-1,y:Y-2});
+                        }
+                    }
+                    if (X+2 < 8){
+                        if(Y+1 < 8){
+                            posmoves.push({x:X+2,y:Y+1});
+                        }
+                        if(Y-1 >= 8){
+                            posmoves.push({x:X+2,y:Y-1});
+                        }
+                    }
+                    if (X-2 >= 0){
+                        if(Y+1 < 8){
+                            posmoves.push({x:X-2,y:Y+1});
+                        }
+                        if(Y-1 >= 0){
+                            posmoves.push({x:X-2,y:Y-1});
+                        }
+                    }
+                    return posmoves;
                 }
 
                 display(X,Y,scale){
@@ -91,13 +139,27 @@
                 }
             }
 
-            class Bishop extends Figure {
+            class Bishop{
                 constructor(color, size){
-                    super(color, size);
+                    this.color = color;
+                    this.size = size;
                 }
 
-                move(){
-
+                possibleMoves(X,Y){
+                    let posmoves = [];
+                    for(let i = 1; X + i < 8 && Y + i < 8; i++){
+                        possmoves.push({x:X+i,y:Y+i});
+                    }
+                    for(let i = 1;X - i >= 0 && Y - i >= 0; i++){
+                        possmoves.push({x:X+i,y:Y+i});
+                    }
+                    for(let i = 1; X-i >= 0 && Y + i < 8; i++){
+                        possmoves.push({x:X-i,y:Y+i});
+                    }
+                    for(let i = 1; X+i < 8 && Y - i >= 0; i++){
+                        possmoves.push({x:X+i,x:Y-i});
+                    }
+                    return posmoves;
                 }
 
                 display(X,Y,scale){
@@ -133,13 +195,33 @@
                 }
             }
 
-            class Queen extends Figure {
+            class Queen{
                 constructor(color, size){
-                    super(color, size);
+                    this.color = color;
+                    this.size = size;
                 }
 
-                move(X,Y){
-
+                posssibleMoves(X,Y){
+                    let posmoves = [];
+                    for(let i = 1; X + i < 8 && Y + i < 8; i++){
+                        possmoves.push({x:X+i,y:Y+i});
+                    }
+                    for(let i = 1;X - i >= 0 && Y - i >= 0; i++){
+                        possmoves.push({x:X+i,y:Y+i});
+                    }
+                    for(let i = 1; X-i >= 0 && Y + i < 8; i++){
+                        possmoves.push({x:X-i,y:Y+i});
+                    }
+                    for(let i = 1; X+i < 8 && Y - i >= 0; i++){
+                        possmoves.push({x:X+i,x:Y-i});
+                    }
+                    for(i = 0; i < 8; i++){
+                        if (i,Y != X,i){
+                            posmoves.push({x:i,y:Y});
+                            posmoves.push({x:X,y:i});
+                        }
+                    }
+                    return posmoves;
                 }
 
                 display(X,Y,scale){
@@ -159,15 +241,43 @@
                           0,
                           2 * Math.PI);
                     c.fill();
+
                 }
             }
 
-            class King extends Figure {
+            class King{
                 constructor(color, size){
-                    super(color, size);
+                    this.color = color;
+                    this.size = size;
                 }
 
-                move(){
+                possibleMoves(X,Y){
+                    let posmoves = [];
+                    if(X+1 < 8){
+                        if(Y+1 < 8){
+                            posmoves.push({x:X+1,y:Y+1});
+                        }
+                        if(Y-1 >= 8){
+                            posmoves.push({x:X+1,y:Y-1});
+                        }
+                        posmoves.push({x:X+1,y:Y});
+                    }
+                    if((X-1 >= 0)){
+                        if(Y+1 < 8){
+                            posmoves.push({x:X-1,y:Y+1});
+                        }
+                        if(Y-1 >= 8){
+                            posmoves.push({x:X-1,y:Y-1});
+                        }
+                        posmoves.push({x:X+-1,y:Y});
+                    }
+                    if(Y+1 < 8){
+                        posmoves.push({x:X,y:Y+1});
+                        }
+                    if(Y-1 >= 8){
+                        posmoves.push({x:X,y:Y-1});
+                    }
+                    return posmoves;
                 }
 
                 display(X,Y,scale){
@@ -309,9 +419,22 @@
                     }
                 }
 
+                selectPiece(X,Y){
+                    if (this.field[X][Y].Figure != null){
+                        if (X < 8 && X >= 0 && Y < 8 && Y >= 0){
+                            this.field[X][Y].Figure.possibleMoves(X,Y);
+                        }
+                    }
+                }
+
                 movePiece(X,Y,newX,newY){
-                    if (newX < 8 && newX >= 0 && newY < 8 && newY >= 0){
-                        
+                    if (this.field[X][Y].Figure != null){
+                        if (newX < 8 && newX >= 0 && newY < 8 && newY >= 0){
+                            if(this.field[X][Y].Figure.move(X,Y,newX,newY)){
+                                this.field[newX][newY].Figure = this.field[X][Y].Figure;
+                                this.field[X][Y].Figure = null; 
+                            }
+                        }
                     }
 
                 }
