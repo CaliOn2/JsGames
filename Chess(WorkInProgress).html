@@ -524,10 +524,11 @@
                 
 
                 selectPiece(worldX, worldY){
-                    let subtractorX = worldX % 100;
-                    let x = (worldX - subtractorX) / 100;
-                    let subtractorY = worldY % 100;
-                    let y = (worldY - subtractorY) / 100;
+                    let subtractorX = (worldX / this.scaleValue) % 100;
+                    let x = ((worldX / this.scaleValue) - subtractorX) / 100;
+                    let subtractorY = (worldY / this.scaleValue) % 100;
+                    let y = ((worldY / this.scaleValue) - subtractorY) / 100;
+                    console.log("Coordinates: " + x +","+ y)
                     if (x < 8 && x >= 0 && y < 8 && y >= 0){
                         if (this.field[y][x].Figure != null){
                             console.log(this.field[y][x].Figure)
@@ -586,7 +587,7 @@
 
                 document.addEventListener(
                     'pointermove',
-                    e => {w.selectPiece(e.clientX - document.body.getBoundingClientRect().left, e.clientY + document.body.getBoundingClientRect().top);}
+                    e => {w.selectPiece(e.clientX - document.body.getBoundingClientRect().left, e.clientY - document.body.getBoundingClientRect().top);}
                 );
 
                 document.addEventListener(
