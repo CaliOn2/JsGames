@@ -525,13 +525,13 @@
 
                 selectPiece(worldX, worldY){
                     let subtractorX = worldX % 100;
-                    let X = (worldX - subtractorX) / 100;
+                    let x = (worldX - subtractorX) / 100;
                     let subtractorY = worldY % 100;
-                    let Y = (worldY - subtractorY) / 100;
-                    if (X < 8 && X >= 0 && Y < 8 && Y >= 0){
-                        if (this.field[X][Y].Figure != null){
-                            console.log(this.field[X][Y].Figure)
-                            let moves = this.field[X][Y].Figure.possibleMoves(X,Y);
+                    let y = (worldY - subtractorY) / 100;
+                    if (x < 8 && x >= 0 && y < 8 && y >= 0){
+                        if (this.field[y][x].Figure != null){
+                            console.log(this.field[y][x].Figure)
+                            let moves = this.field[y][x].Figure.possibleMoves(x,y);
                             console.log(moves);
                             for (let i = 0; i <= moves.length; i++){
                                 console.log(moves[i]);
@@ -549,11 +549,11 @@
                 }
 
                 movePiece(x, y, newX, newY){
-                    if (this.field[x][y].Figure != null){
+                    if (this.field[y][x].Figure != null){
                         if (newX < 8 && newX >= 0 && newY < 8 && newY >= 0){
-                            if(this.field[x][y].Figure.move(x, y, newX, newY)){
-                                this.field[newX][newY].Figure = this.field[x][y].Figure;
-                                this.field[x][y].Figure = null; 
+                            if(this.field[y][x].Figure.move(x, y, newX, newY)){
+                                this.field[newX][newY].Figure = this.field[y][x].Figure;
+                                this.field[y][x].Figure = null; 
                             }
                         }
                     }
@@ -564,7 +564,7 @@
                     for (let x = 0; x < 8; x++){
                         for (let y = 0; y < 8; y++){
                             console.log("X and Y :" + x + y);
-                            this.field[x][y].display(this.scaleValue);
+                            this.field[y][x].display(this.scaleValue);
                         }
                     }
                 }
@@ -586,7 +586,7 @@
 
                 document.addEventListener(
                     'pointermove',
-                    e => {w.selectPiece(e.clientX - document.body.getBoundingClientRect().left, e.clientY - document.body.getBoundingClientRect().top);}
+                    e => {w.selectPiece(e.clientX - document.body.getBoundingClientRect().left, e.clientY + document.body.getBoundingClientRect().top);}
                 );
 
                 document.addEventListener(
