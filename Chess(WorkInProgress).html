@@ -77,7 +77,7 @@
 
                 possibleMoves(X,Y){
                     let posmoves = [];
-                    let pieceCheck = function(newX,newY){
+                    function pieceCheck(newX,newY){
                         if (w.field[newX][newY].figure != null){
                             if (w.field[newX][newY].figure.color != this.color){
                                 posmoves.push({x:newX,y:newY});
@@ -92,7 +92,8 @@
                         if (pieceCheck(X+i,Y)){
                             break;
                         }
-                    for(let i = 1; Y+i < 8; i++)
+                    }
+                    for(let i = 1; Y+i < 8; i++){
                         if (pieceCheck(X,Y+i)){
                             break;
                         }
@@ -101,7 +102,8 @@
                         if (pieceCheck(X-i,Y)){
                             break;
                         }
-                    for(let i = 1; Y-i >= 0; i++)
+                    }
+                    for(let i = 1; Y-i >= 0; i++){
                         if (pieceCheck(X,Y-i)){
                             break;
                         }
@@ -126,7 +128,7 @@
 
                 possibleMoves(X,Y){
                     let posmoves = [];
-                    let pieceCheck = function(newX,newY) {
+                    function pieceCheck(newX,newY) {
                         if(w.field[newX][newY].Figure === null 
                         || w.field[newX][newY].Figure.color != this.color){
                             posmoves.push({x:newX,y:newY});
@@ -192,7 +194,7 @@
 
                 possibleMoves(X,Y){
                     let posmoves = [];
-                    let pieceCheck = function(newX,newY){
+                    function pieceCheck(newX,newY){
                         if (w.field[newX][newY].figure != null){
                             if (w.field[newX][newY].figure.color != this.color){
                                 posmoves.push({x:newX,y:newY});
@@ -267,7 +269,7 @@
 
                 possibleMoves(X,Y){
                     let posmoves = [];
-                    let pieceCheck = function(newX,newY){
+                    function pieceCheck(newX,newY){
                         if (w.field[newX][newY].figure != null){
                             if (w.field[newX][newY].figure.color != this.color){
                                 posmoves.push({x:newX,y:newY});
@@ -302,7 +304,8 @@
                         if (pieceCheck(X+i,Y)){
                             break;
                         }
-                    for(let i = 1; Y+i < 8; i++)
+                    }
+                    for(let i = 1; Y+i < 8; i++){
                         if (pieceCheck(X,Y+i)){
                             break;
                         }
@@ -311,7 +314,8 @@
                         if (pieceCheck(X-i,Y)){
                             break;
                         }
-                    for(let i = 1; Y-i >= 0; i++)
+                    }
+                    for(let i = 1; Y-i >= 0; i++){
                         if (pieceCheck(X,Y-i)){
                             break;
                         }
@@ -348,7 +352,7 @@
 
                 possibleMoves(X,Y){
                     let posmoves = [];
-                    let pieceCheck = function(newX,newY) {
+                    function pieceCheck(newX,newY) {
                         if(w.field[newX][newY].Figure === null 
                         || w.field[newX][newY].Figure.color != this.color){
                             posmoves.push({x:newX,y:newY});
@@ -375,7 +379,7 @@
                     }
                     if(Y+1 < 8){
                         pieceCheck(X,Y+1);
-                        }
+                    }
                     if(Y-1 >= 8){
                         pieceCheck(X,Y-1);
                     }
@@ -545,12 +549,12 @@
                     }
                 }
 
-                movePiece(X,Y,newX,newY){
-                    if (this.field[X][Y].Figure != null){
+                movePiece(x,x,newX,newY){
+                    if (this.field[x][y].Figure != null){
                         if (newX < 8 && newX >= 0 && newY < 8 && newY >= 0){
-                            if(this.field[X][Y].Figure.move(X,Y,newX,newY)){
-                                this.field[newX][newY].Figure = this.field[X][Y].Figure;
-                                this.field[X][Y].Figure = null; 
+                            if(this.field[x][y].Figure.move(x,y,newX,newY)){
+                                this.field[newX][newY].Figure = this.field[x][y].Figure;
+                                this.field[x][y].Figure = null; 
                             }
                         }
                     }
@@ -558,10 +562,10 @@
                 }
 
                 displayWorld(){
-                    for (let X = 0; X < 8; X++){
-                        for (let Y = 0; Y < 8; Y++){
-                            console.log("X and Y :" + X + Y);
-                            this.field[X][Y].display(this.scaleValue);
+                    for (let x = 0; x < 8; x++){
+                        for (let y = 0; y < 8; y++){
+                            console.log("X and Y :" + x + y);
+                            this.field[x][y].display(this.scaleValue);
                         }
                     }
                 }
