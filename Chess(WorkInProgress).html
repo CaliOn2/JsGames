@@ -23,11 +23,11 @@
                     this.color = color;
                     this.size = size;
                 }
-                isOnBoard(x,y){
+                isOnBoard(x, y){
                     return w.field[x][y].figure != null;
                 }
 
-                isSameColor(x,y){
+                isSameColor(x, y){
                     return w.field[x][y].figure.piece.color === this.color;
                 }
             }
@@ -37,7 +37,7 @@
                     this.piece = new Piece(color,size);
                 }
 
-                possibleMoves(x,y){
+                possibleMoves(x, y){
                     let posmoves = [];
                     if (this.piece.color === w.black && y < 7){
                         if (x - 1 >= 0 && this.piece.isOnBoard(x - 1, y + 1) && !this.piece.isSameColor(x - 1, y + 1)){
@@ -54,7 +54,7 @@
                         }
                     }
                     if (this.piece.color === w.white && y >= 0){
-                        if (x - 1 >= 0 && this.piece.isOnBoard(x - 1, y - 1)&& !this.piece.isSameColor(x - 1, y - 1)){
+                        if (x - 1 >= 0 && this.piece.isOnBoard(x - 1, y - 1) && !this.piece.isSameColor(x - 1, y - 1)){
                             posmoves.push({x: x - 1, y: y - 1});
                         }
                         if (x + 1 < 8 && this.piece.isOnBoard(x + 1, y - 1) && !this.piece.isSameColor(x + 1, y - 1)){
@@ -70,7 +70,7 @@
                     return posmoves;
                 }
 
-                display(x,y,scale){
+                display(x, y, scale){
                     c.fillStyle = this.piece.color;
                     c.beginPath();
                     c.arc((x + this.piece.size / 8 * 5) * scale,
@@ -87,11 +87,11 @@
                     this.piece = new Piece(color, size); 
                 }
 
-                possibleMoves(x,y){
+                possibleMoves(x, y){
                     let result = [];
 
                     function possibleMovesInLine(xIndex, yIndex, testFunction){
-                        for (let i = 1;testFunction(i);i++){
+                        for (let i = 1; testFunction(i); i++){
                             let position = {
                                 x: xLine(i),
                                 y: yLine(i)
@@ -133,26 +133,26 @@
                     return result;
                 }
 
-                display(x,y,scale){
+                display(x, y, scale){
                     c.fillStyle = this.piece.color;
                     c.fillRect((x + this.piece.size / 16 * 3) * scale,
                                (y + this.piece.size / 16 * 3) * scale,
-                               this.piece.size,
-                               this.piece.size);
+                               this.piece.size * scale,
+                               this.piece.size * scale);
                 }
             }
 
             class Knight{
                 constructor(color, size){
-                    this.piece = new Piece(color,size);
+                    this.piece = new Piece(color, size);
                 }
 
-                possibleMoves(x,y){
+                possibleMoves(x, y){
                     let result = [];
-                    function pieceCheck(x,y) {
-                        if(!this.piece.isOnBoard(x,y) 
-                        || this.piece.isSameColor(x,y)){
-                            result.push({x:x,y:y});
+                    function pieceCheck(x, y) {
+                        if(!this.piece.isOnBoard(x, y) 
+                        || this.piece.isSameColor(x, y)){
+                            result.push({x: x, y: y});
                         }
                     };
                     if (x+1 < 8){
@@ -190,20 +190,20 @@
                     return result;
                 }
 
-                display(x,y,scale){
+                display(x, y, scale){
                     c.fillStyle = this.piece.color;
                     c.fillRect((x + this.piece.size / 2) * scale,
                                (y + this.piece.size / 16 * 3) * scale,
-                               this.piece.size / 4,
-                               this.piece.size);
+                               this.piece.size / 4 * scale,
+                               this.piece.size * scale);
                     c.fillRect((x + this.piece.size / 16 * 3) * scale,
                                (y + this.piece.size / 8 * 3) * scale,
-                               this.piece.size,
-                               this.piece.size / 8);
+                               this.piece.size * scale,
+                               this.piece.size / 8 * scale);
                     c.fillRect((x + this.piece.size / 16 * 3) * scale,
                                (y + this.piece.size / 4 * 3) * scale,
-                               this.piece.size,
-                               this.piece.size / 8);
+                               this.piece.size * scale,
+                               this.piece.size / 8 * scale);
                 }
             }
 
@@ -212,7 +212,7 @@
                     this.piece = new Piece(color,size);
                 }
 
-                possibleMoves(x,y){
+                possibleMoves(x, y){
                     result = [];
 
                     function possibleMovesInLine(xIndex, yIndex, testFunction){
@@ -221,8 +221,8 @@
                                 x: xIndex(i),
                                 y: yIndex(i)
                             }
-                            if(this.piece.isOnBoard(xIndex(i),yIndex(i))){
-                                if(!this.piece.isSameColor(xIndex(i),yIndex(i))){
+                            if(this.piece.isOnBoard(xIndex(i), yIndex(i))){
+                                if(!this.piece.isSameColor(xIndex(i), yIndex(i))){
                                     result.push(position);
                                 }
                                 break;
@@ -258,9 +258,9 @@
                     return result;
                 }
 
-                display(x,y,scale){
+                display(x, y, scale){
                     c.fillStyle = this.piece.color;
-                    function drawCircle(x,y,size){
+                    function drawCircle(x, y, size){
                         c.beginPath();
                         c.arc(
                           x * scale,
@@ -271,19 +271,19 @@
                         c.fill();
                     }
 
-                    drawCircle(x + 35, y + 35,this.piece.size);
-                    drawCircle(x + 35, y + 65,this.piece.size);
-                    drawCircle(x + 65, y + 65,this.piece.size);
-                    drawCircle(x + 65, y + 35,this.piece.size);
+                    drawCircle(x + 35, y + 35, this.piece.size);
+                    drawCircle(x + 35, y + 65, this.piece.size);
+                    drawCircle(x + 65, y + 65, this.piece.size);
+                    drawCircle(x + 65, y + 35, this.piece.size);
                 }
             }
 
             class Queen{
                 constructor(color, size){
-                    this.piece = new Piece(color,size);
+                    this.piece = new Piece(color, size);
                 }
 
-                possibleMoves(x,y){
+                possibleMoves(x, y){
                     let result = [];
                     function possibleMovesInLine(xIndex, yIndex, testFunction){
                         for(let i = 0; testFunction(i); i++){
@@ -291,8 +291,8 @@
                                 x: xIndex(i),
                                 y: yIndex(i)
                             }
-                            if(this.piece.isOnBoard(xIndex(i),yIndex(i))){
-                                if(!this.piece.isSameColor(xIndex(i),yIndex(i))){
+                            if(this.piece.isOnBoard(xIndex(i), yIndex(i))){
+                                if(!this.piece.isSameColor(xIndex(i), yIndex(i))){
                                     result.push(position);
                                 }
                                 break;
@@ -352,20 +352,20 @@
                     return result;
                 }
 
-                display(x,y,scale){
+                display(x, y, scale){
                     c.fillStyle = this.piece.color;
                     c.fillRect((x + this.piece.size / 16 * 3) * scale,
                                (y + this.piece.size / 16 * 9) * scale,
-                               this.piece.size,
-                               this.piece.size / 8);
+                               this.piece.size * scale,
+                               this.piece.size / 8 * scale);
                     c.fillRect((x + this.piece.size / 16 * 9) * scale,
                                (y + this.piece.size / 16 * 3) * scale,
-                               this.piece.size / 8,
-                               this.piece.size);
+                               this.piece.size / 8 * scale,
+                               this.piece.size * scale);
                     c.beginPath();
                     c.arc((x + this.piece.size / 8 * 5) * scale,
                           (y + this.piece.size / 8 * 5) * scale,
-                          (this.piece.size/3) * scale,
+                          (this.piece.size / 3) * scale,
                           0,
                           2 * Math.PI);
                     c.fill();
@@ -375,15 +375,15 @@
 
             class King{
                 constructor(color, size){
-                    this.piece = new Piece(color,size);
+                    this.piece = new Piece(color, size);
                 }
 
-                possibleMoves(x,y){
+                possibleMoves(x, y){
                     let result = [];
-                    function pieceCheck(x,y) {
-                        if(!this.piece.isOnBoard(x,y) 
-                        || !this.piece.isSameColor(x,y)){
-                            result.push({x:x,y:y});
+                    function pieceCheck(x, y) {
+                        if(!this.piece.isOnBoard(x, y) 
+                        || !this.piece.isSameColor(x, y)){
+                            result.push({x: x, y: y});
                         }
                     };
 
@@ -414,16 +414,16 @@
                     return result;
                 }
 
-                display(x,y,scale){
+                display(x, y, scale){
                     c.fillStyle = this.piece.color;
                     c.fillRect((x + this.piece.size / 8 * 3) * scale,
                                (y + this.piece.size / 8) * scale,
-                               this.piece.size/2,
+                               this.piece.size / 2 * scale,
                                this.piece.size / 16 * 17);
                     c.fillRect((x + this.piece.size / 8) * scale,
                                (y + this.piece.size / 8 * 3) * scale,
-                               this.piece.size / 16 * 17,
-                               this.piece.size/2);
+                               this.piece.size / 16 * 17 * scale,
+                               this.piece.size / 2 * scale);
                 }
             }
 
@@ -473,21 +473,21 @@
                     this.fillField();
                 }//          fills the field with squares and their figures
 
-                backRow(color,y){
-                        return  [new Tile(0,y,new Rook(color,this.figureSize)),
-                                new Tile(1,y,new Knight(color,this.figureSize)),
-                                new Tile(2,y,new Bishop(color,this.figureSize)),
-                                new Tile(3,y,new Queen(color,this.figureSize)),
-                                new Tile(4,y,new King(color,this.figureSize)),
-                                new Tile(5,y,new Bishop(color,this.figureSize)),
-                                new Tile(6,y,new Knight(color,this.figureSize)),
-                                new Tile(7,y,new Rook(color,this.figureSize))];
+                backRow(color, y){
+                        return  [new Tile(0, y, new Rook(color, this.figureSize)),
+                                new Tile(1, y, new Knight(color, this.figureSize)),
+                                new Tile(2, y, new Bishop(color, this.figureSize)),
+                                new Tile(3, y, new Queen(color, this.figureSize)),
+                                new Tile(4, y, new King(color, this.figureSize)),
+                                new Tile(5, y, new Bishop(color, this.figureSize)),
+                                new Tile(6, y, new Knight(color, this.figureSize)),
+                                new Tile(7, y, new Rook(color, this.figureSize))];
                 }
 
-                pawnRow(color,y){
+                pawnRow(color, y){
                     let row = []
                     for (let x = 0; x < 8; x++){
-                        row.push(new Tile(x,y,new Pawn(color,this.figureSize)));
+                        row.push(new Tile(x, y, new Pawn(color, this.figureSize)));
                     }
                     return row;
                 }
@@ -495,7 +495,7 @@
                 emptyRow(y){
                     let row = []
                     for (let x = 0; x < 8; x++){
-                        row.push(new Tile(x,y,null));
+                        row.push(new Tile(x, y, null));
                     }
                     return row;
                 }
@@ -505,13 +505,13 @@
                             //  0 = empty, 1 = pawn 2 = rook 3 = horse 4 = priest 5 = queen 6 =  King  
                         switch(y){
                             case 0:
-                                this.field[y] = this.backRow(this.black,y);
+                                this.field[y] = this.backRow(this.black, y);
                                 break;
                             case 1:
-                                this.field[y] = this.pawnRow(this.black,y);
+                                this.field[y] = this.pawnRow(this.black, y);
                                 break;
                             case 6:
-                                this.field[y] = this.pawnRow(this.white,y);
+                                this.field[y] = this.pawnRow(this.white, y);
                                 break;
                             case 7:
                                 this.field[y] = this.backRow(this.white,y);
@@ -523,11 +523,11 @@
                 }
                 
 
-                selectPiece(worldX,worldY){
+                selectPiece(worldX, worldY){
                     let subtractorX = worldX % 100;
-                    let X = (worldX-subtractorX)/100;
+                    let X = (worldX - subtractorX) / 100;
                     let subtractorY = worldY % 100;
-                    let Y = (worldY-subtractorY)/100;
+                    let Y = (worldY - subtractorY) / 100;
                     if (X < 8 && X >= 0 && Y < 8 && Y >= 0){
                         if (this.field[X][Y].Figure != null){
                             console.log(this.field[X][Y].Figure)
@@ -537,9 +537,9 @@
                                 console.log(moves[i]);
                                 c.fillStyle = "Green";
                                 c.beginPath();
-                                c.arc((moves[i].x*100 + 50) * this.scaleValue,
-                                (moves[i].y*100 + 50) * this.scaleValue,
-                                (this.size/2) * this.scaleValue,
+                                c.arc((moves[i].x * 100 + 50) * this.scaleValue,
+                                (moves[i].y * 100 + 50) * this.scaleValue,
+                                (this.size / 2) * this.scaleValue,
                                 0,
                                 2 * Math.PI);
                                 c.fill();
@@ -548,10 +548,10 @@
                     }
                 }
 
-                movePiece(x,y,newX,newY){
+                movePiece(x, y, newX, newY){
                     if (this.field[x][y].Figure != null){
                         if (newX < 8 && newX >= 0 && newY < 8 && newY >= 0){
-                            if(this.field[x][y].Figure.move(x,y,newX,newY)){
+                            if(this.field[x][y].Figure.move(x, y, newX, newY)){
                                 this.field[newX][newY].Figure = this.field[x][y].Figure;
                                 this.field[x][y].Figure = null; 
                             }
@@ -586,12 +586,12 @@
 
                 document.addEventListener(
                     'pointermove',
-                    e => {w.selectPiece(e.clientX - document.body.getBoundingClientRect().left,e.clientY - document.body.getBoundingClientRect().top);}
+                    e => {w.selectPiece(e.clientX - document.body.getBoundingClientRect().left, e.clientY - document.body.getBoundingClientRect().top);}
                 );
 
                 document.addEventListener(
                     'dblclick',
-                    e => {w.movePiece(e.clientX - document.body.getBoundingClientRect().left,e.clientY - document.body.getBoundingClientRect().top);}
+                    e => {w.movePiece(e.clientX - document.body.getBoundingClientRect().left, e.clientY - document.body.getBoundingClientRect().top);}
                 );
 
                 game();
