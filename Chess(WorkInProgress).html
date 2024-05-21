@@ -27,16 +27,32 @@
                 possibleMoves(X,Y){
                     let posmoves = [];
                     if (this.color === w.black && Y < 7){
-                        if (Y === 1){
-                            posmoves.push({x:X,y:Y+2});
+                        if (X-1 >= 0 && w.field[X-1][Y+1].figure != null && w.field[X-1][Y+1].figure.color === w.white){
+                            posmoves.push({x:X-1,y:Y+1});
                         }
-                        posmoves.push({x:X,y:Y+1});
+                        if (X+1 < 8 && w.field[X+1][Y+1].figure != null && w.field[X+1][Y+1].figure.color === w.white){
+                            posmoves.push({x:X+1,y:Y+1});
+                        }
+                        if (w.field[X][Y+1].figure === null){
+                            posmoves.push({x:X,y:Y+1});
+                            if (Y === 1 && w.field[X][Y+2].figure === null){
+                                posmoves.push({x:X,y:Y+2});
+                            }
+                        }
                     }
                     if (this.color === w.white > 0){
-                        if (Y === 6){
-                            posmoves.push({x:X,y:Y-2});
+                        if (X-1 >= 0 && w.field[X-1][Y-1].figure != null && w.field[X-1][Y-1].figure.color===w.black){
+                            posmoves.push({x:X-1,y:Y-1});
                         }
-                        posmoves.push({x:X,y:Y-1});
+                        if (X+1 < 8 && w.field[X+1][Y-1].figure != null && w.field[X+1][Y-1].figure.color===w.black){
+                            posmoves.push({x:X+1,y:Y-1});
+                        }
+                        if (w.field[X][Y-1].figure === null){
+                            posmoves.push({x:X,y:Y-1});
+                            if (Y === 6 && w.field[X][Y-2].figure === null){
+                                posmoves.push({x:X,y:Y-2});
+                            }
+                        }
                     }
                     return posmoves;
                 }
@@ -61,12 +77,45 @@
 
                 possibleMoves(X,Y){
                     let posmoves = [];
-                    for(i = 0; i < 8; i++){
-                        if (i,Y != X,i){
-                            posmoves.push({x:i,y:Y});
-                            posmoves.push({x:X,y:i});
+                    for(i = 1; X+i < 8; i++){
+                        if (w.field[X+i][Y].figure != null){
+                            if (w.field[X+i][Y].figure.color != this.color){
+                                posmoves.push({x:X+i,y:Y});
+                            }
+                            break;
+                        }else{
+                            posmoves.push({x:X+i,y:Y});
+                        }
+                    for(i = 1; Y+i < 8; i++)
+                        if (w.field[X][Y+1].figure != null){
+                            if (w.field[X][Y+i].figure.color != this.color){
+                                posmoves.push({x:X,y:Y+i});
+                            }
+                            break;
+                        }else{
+                            posmoves.push({x:X,y:Y+i});
                         }
                     }
+                    for(i = 1; X-i >= 0; i++){
+                        if (w.field[X-i][Y].figure != null){
+                            if (w.field[X-i][Y].figure.color != this.color){
+                                posmoves.push({x:X-i,y:Y});
+                            }
+                            break;
+                        }else{
+                            posmoves.push({x:X-i,y:Y});
+                        }
+                    for(i = 1; Y-i >= 0; i++)
+                        if (w.field[X][Y-1].figure != null){
+                            if (w.field[X][Y-i].figure.color != this.color){
+                                posmoves.push({x:X,y:Y-i});
+                            }
+                            break;
+                        }else{
+                            posmoves.push({x:X,y:Y-i});
+                        }
+                    }
+                    
                     return posmoves;
                 }
 
