@@ -18,51 +18,64 @@
             const d = document.getElementById("canvas");
             const c = d.getContext("2d");
 
-            class Pawn{
+            class Piece {
                 constructor(color, size){
                     this.color = color;
                     this.size = size;
                 }
+                isOnBoard(x,y){
+                    return w.field[x][y].figure != null;
+                }
 
-                possibleMoves(X,Y){
+                isSameColor(x,y){
+                    return w.field[x][y].figure.piece.color === this.color;
+                }
+            }
+
+            class Pawn{
+                constructor(color, size){
+                    this.piece = new Piece(color,size);
+                }
+
+                possibleMoves(x,y){
                     let posmoves = [];
-                    if (this.color === w.black && Y < 7){
-                        if (X-1 >= 0 && w.field[X-1][Y+1].figure != null && w.field[X-1][Y+1].figure.color != this.color){
-                            posmoves.push({x:X-1,y:Y+1});
+                    if (this.piece.color === w.black && y < 7){
+                        if (x - 1 >= 0 && this.piece.isOnBoard(x - 1, y + 1) && !this.piece.isSameColor(x - 1, y + 1)){
+                            posmoves.push({x: x - 1, y: y + 1 });
                         }
-                        if (X+1 < 8 && w.field[X+1][Y+1].figure != null && w.field[X+1][Y+1].figure.color != this.color){
-                            posmoves.push({x:X+1,y:Y+1});
+                        if (x + 1 < 8 && this.piece.isOnBoard(x + 1, y + 1) && !this.piece.isSameColor(x + 1, y + 1)){
+                            posmoves.push({x: x + 1, y: y + 1});
                         }
-                        if (w.field[X][Y+1].figure === null){
-                            posmoves.push({x:X,y:Y+1});
-                            if (Y === 1 && w.field[X][Y+2].figure === null){
-                                posmoves.push({x:X,y:Y+2});
+                        if (!this.piece.isOnBoard(x, y + 1)){
+                            posmoves.push({x: x, y: y + 1});
+                            if (y === 1 && !this.piece.isOnBoard(x, y + 2)){
+                                posmoves.push({x: x, y: y + 2});
                             }
                         }
                     }
-                    if (this.color === w.white > 0){
-                        if (X-1 >= 0 && w.field[X-1][Y-1].figure != null && w.field[X-1][Y-1].figure.color != this.color){
-                            posmoves.push({x:X-1,y:Y-1});
+                    if (this.piece.color === w.white && y >= 0){
+                        if (x - 1 >= 0 && this.piece.isOnBoard(x - 1, y - 1)&& !this.piece.isSameColor(x - 1, y - 1)){
+                            posmoves.push({x: x - 1, y: y - 1});
                         }
-                        if (X+1 < 8 && w.field[X+1][Y-1].figure != null && w.field[X+1][Y-1].figure.color != this.color){
-                            posmoves.push({x:X+1,y:Y-1});
+                        if (x + 1 < 8 && this.piece.isOnBoard(x + 1, y - 1) && !this.piece.isSameColor(x + 1, y - 1)){
+                            posmoves.push({x: x + 1, y: y - 1});
                         }
-                        if (w.field[X][Y-1].figure === null){
-                            posmoves.push({x:X,y:Y-1});
-                            if (Y === 6 && w.field[X][Y-2].figure === null){
-                                posmoves.push({x:X,y:Y-2});
+                        if (!this.piece.isOnBoard(x, y - 1)){
+                            posmoves.push({x: x, y: y - 1});
+                            if (y === 6 && !this.piece.isOnBoard(x, y - 2)){
+                                posmoves.push({x: x, y: y - 2});
                             }
                         }
                     }
                     return posmoves;
                 }
 
-                display(X,Y,scale){
-                    c.fillStyle = this.color;
+                display(x,y,scale){
+                    c.fillStyle = this.piece.color;
                     c.beginPath();
-                    c.arc((X + 50) * scale,
-                          (Y + 50) * scale,
-                          (this.size/2.5) * scale,
+                    c.arc((x + this.piece.size / 8 * 5) * scale,
+                          (y + this.piece.size / 8 * 5) * scale,
+                          (this.piece.size / 2.5) * scale,
                           0,
                           2 * Math.PI);
                     c.fill();
@@ -71,272 +84,288 @@
 
             class Rook{
                 constructor(color, size){
-                    this.color = color;
-                    this.size = size;
+                    this.piece = new Piece(color, size); 
                 }
 
-                possibleMoves(X,Y){
-                    let posmoves = [];
-                    function pieceCheck(newX,newY){
-                        if (w.field[newX][newY].figure != null){
-                            if (w.field[newX][newY].figure.color != this.color){
-                                posmoves.push({x:newX,y:newY});
+                possibleMoves(x,y){
+                    let result = [];
+
+                    function possibleMovesInLine(xIndex, yIndex, testFunction){
+                        for (let i = 1;testFunction(i);i++){
+                            let position = {
+                                x: xLine(i),
+                                y: yLine(i)
+                            };
+                            if (this.piece.isOnBoard(xIndex(i),yIndex(i))){
+                                if(!this.piece.isSameColor(xIndex(i),yIndex(i))){
+                                    result.push(position);
+                                }
+                                break;
                             }
-                            return true;
-                        }else{
-                            posmoves.push({x:newX,y:newY});
-                            return false;
-                        }
-                    };
-                    for(let i = 1; X+i < 8; i++){
-                        if (pieceCheck(X+i,Y)){
-                            break;
+                            result.push(position);
                         }
                     }
-                    for(let i = 1; Y+i < 8; i++){
-                        if (pieceCheck(X,Y+i)){
-                            break;
-                        }
-                    }
-                    for(let i = 1; X-i >= 0; i++){
-                        if (pieceCheck(X-i,Y)){
-                            break;
-                        }
-                    }
-                    for(let i = 1; Y-i >= 0; i++){
-                        if (pieceCheck(X,Y-i)){
-                            break;
-                        }
-                    }
-                    return posmoves;
+
+                    possibleMovesInline(
+                        i => x + i,
+                        i => y,
+                        i => x + i < 8
+                    );
+
+                    possibleMovesInline(
+                        i => x - i,
+                        i => y,
+                        i => x - i >= 0
+                    );
+
+                    possibleMovesInline(
+                        i => x,
+                        i => y + i,
+                        i => y + i < 8
+                    );
+
+                    possibleMovesInline(
+                        i => x,
+                        i => y - i,
+                        i => y - i >= 0
+                    );
+
+                    return result;
                 }
 
-                display(X,Y,scale){
-                    c.fillStyle = this.color;
-                    c.fillRect((X + 15) * scale,
-                               (Y + 15) * scale,
-                               this.size,
-                               this.size);
+                display(x,y,scale){
+                    c.fillStyle = this.piece.color;
+                    c.fillRect((x + this.piece.size / 16 * 3) * scale,
+                               (y + this.piece.size / 16 * 3) * scale,
+                               this.piece.size,
+                               this.piece.size);
                 }
             }
 
             class Knight{
                 constructor(color, size){
-                    this.color = color;
-                    this.size = size;
+                    this.piece = new Piece(color,size);
                 }
 
-                possibleMoves(X,Y){
-                    let posmoves = [];
-                    function pieceCheck(newX,newY) {
-                        if(w.field[newX][newY].Figure === null 
-                        || w.field[newX][newY].Figure.color != this.color){
-                            posmoves.push({x:newX,y:newY});
+                possibleMoves(x,y){
+                    let result = [];
+                    function pieceCheck(x,y) {
+                        if(!this.piece.isOnBoard(x,y) 
+                        || this.piece.isSameColor(x,y)){
+                            result.push({x:newX,y:newY});
                         }
                     };
-                    if (X+1 < 8){
-                        if (Y+2 < 8){
-                            pieceCheck(X+1,Y+2);
+                    if (x+1 < 8){
+                        if (y+2 < 8){
+                            pieceCheck(x+1,y+2);
                         }
                         if (y-2 >= 0){
-                            pieceCheck(X+1,Y-2);
+                            pieceCheck(x+1,y-2);
                         }
                     }
-                    if (X-1 >= 0){
-                        if (Y+2 < 8){
-                            pieceCheck(X-1,Y+2);
+                    if (x-1 >= 0){
+                        if (y+2 < 8){
+                            pieceCheck(x-1,y+2);
                         }
-                        if (Y-2 >= 0){
-                            pieceCheck(X-1,Y-2);
-                        }
-                    }
-                    if (X+2 < 8){
-                        if(Y+1 < 8){
-                            pieceCheck(X+2,Y+1);
-                        }
-                        if(Y-1 >= 8){
-                            pieceCheck(X+2,Y-1);
+                        if (y-2 >= 0){
+                            pieceCheck(x-1,y-2);
                         }
                     }
-                    if (X-2 >= 0){
-                        if(Y+1 < 8){
-                            pieceCheck(X-2,Y+1);
+                    if (x+2 < 8){
+                        if(y+1 < 8){
+                            pieceCheck(x+2,y+1);
+                        }
+                        if(y-1 >= 8){
+                            pieceCheck(x+2,y-1);
+                        }
+                    }
+                    if (x-2 >= 0){
+                        if(y+1 < 8){
+                            pieceCheck(x-2,y+1);
                         }
                         if(Y-1 >= 0){
-                            pieceCheck(X-2,Y-1);
+                            pieceCheck(x-2,y-1);
                         }
                     }
-                    return posmoves;
+                    return result;
                 }
 
-                display(X,Y,scale){
-                    c.fillStyle = this.color;
-                    c.fillRect((X + 40) * scale,
-                               (Y + 15) * scale,
-                               20,
-                               80);
-                    c.fillRect((X + 15) * scale,
-                               (Y + 30) * scale,
-                               80,
-                               10);
-                    c.fillRect((X + 15) * scale,
-                               (Y + 60) * scale,
-                               80,
-                               10);
+                display(x,y,scale){
+                    c.fillStyle = this.piece.color;
+                    c.fillRect((x + this.piece.size / 2) * scale,
+                               (y + this.piece.size / 16 * 3) * scale,
+                               this.piece.size / 4,
+                               this.piece.size);
+                    c.fillRect((x + this.piece.size / 16 * 3) * scale,
+                               (y + this.piece.size / 8 * 3) * scale,
+                               this.piece.size,
+                               this.piece.size / 8);
+                    c.fillRect((x + this.piece.size / 16 * 3) * scale,
+                               (y + this.piece.size / 4 * 3) * scale,
+                               this.piece.size,
+                               this.piece.size / 8);
                 }
             }
 
             class Bishop{
                 constructor(color, size){
-                    this.color = color;
-                    this.size = size;
+                    this.piece = new Piece(color,size);
                 }
 
-                possibleMoves(X,Y){
-                    let posmoves = [];
-                    function pieceCheck(newX,newY){
-                        if (w.field[newX][newY].figure != null){
-                            if (w.field[newX][newY].figure.color != this.color){
-                                posmoves.push({x:newX,y:newY});
+                possibleMoves(x,y){
+                    result = [];
+
+                    function possibleMovesInLine(xIndex, yIndex, testFunction){
+                        for(let i = 0; testFunction(i); i++){
+                            let position = {
+                                x: xIndex(i),
+                                y: yIndex(i)
                             }
-                            return true;
-                        }else{
-                            posmoves.push({x:newX,y:newY});
-                            return false;
-                        }
-                    };
-                    for(let i = 1; X + i < 8 && Y + i < 8; i++){
-                        if (pieceCheck(X+i,Y+i)){
-                            break;
+                            if(this.piece.isOnBoard(xIndex(i),yIndex(i))){
+                                if(!this.piece.isSameColor(xIndex(i),yIndex(i))){
+                                    result.push(position);
+                                }
+                                break;
+                            }
+                            result.push(position);
                         }
                     }
-                    for(let i = 1;X - i >= 0 && Y - i >= 0; i++){
-                        if (pieceCheck(X-i,Y-i)){
-                            break;
-                        }
-                    }
-                    for(let i = 1; X - i >= 0 && Y + i < 8; i++){
-                        if (pieceCheck(X-i,Y+i)){
-                            break;
-                        }
-                    }
-                    for(let i = 1; X + i < 8 && Y - i >= 0; i++){
-                        if (pieceCheck(X+i,Y-i)){
-                            break;
-                        }
-                    }
-                    return posmoves;
+
+                    possibleMovesInLine(
+                        i => x + i,
+                        i => y + i,
+                        i => x + i < 8 && y + i < 8
+                    );
+
+                    possibleMovesInLine(
+                        i => x - i,
+                        i => y - i,
+                        i => x - i >= 0 && y - i >= 0
+                    );
+
+                    possibleMovesInLine(
+                        i => x + i,
+                        i => y - i,
+                        i => x + i < 8 && y - i >= 0
+                    );
+
+                    possibleMovesInLine(
+                        i => x - i,
+                        i => y + i,
+                        i => x - i >= 0 && y + i < 8
+                    );
+
+                    return result;
                 }
 
-                display(X,Y,scale){
-                    c.fillStyle = this.color;
-                    c.beginPath();
-                    c.arc((X + 35) * scale,
-                          (Y + 35) * scale,
-                          (this.size/4) * scale,
+                display(x,y,scale){
+                    c.fillStyle = this.piece.color;
+                    function drawCircle(x,y,size){
+                        c.beginPath();
+                        c.arc(
+                          x * scale,
+                          y * scale,
+                          (size / 4) * scale,
                           0,
                           2 * Math.PI);
-                    c.fill();
-                    c.beginPath();
-                    c.arc((X + 35) * scale,
-                          (Y + 65) * scale,
-                          (this.size/4) * scale,
-                          0,
-                          2 * Math.PI);
-                    c.fill();
-                    c.beginPath();
-                    c.arc((X + 65) * scale,
-                          (Y + 65) * scale,
-                          (this.size/4) * scale,
-                          0,
-                          2 * Math.PI);
-                    c.fill();
-                    c.beginPath();
-                    c.arc((X + 65) * scale,
-                          (Y + 35) * scale,
-                          (this.size/4) * scale,
-                          0,
-                          2 * Math.PI);
-                    c.fill();
+                        c.fill();
+                    }
+
+                    drawCircle(x + 35, y + 35,this.piece.size);
+                    drawCircle(x + 35, y + 65,this.piece.size);
+                    drawCircle(x + 65, y + 65,this.piece.size);
+                    drawCircle(x + 65, y + 35,this.piece.size);
                 }
             }
 
             class Queen{
                 constructor(color, size){
-                    this.color = color;
-                    this.size = size;
+                    this.piece = new Piece(color,size);
                 }
 
-                possibleMoves(X,Y){
-                    let posmoves = [];
-                    function pieceCheck(newX,newY){
-                        if (w.field[newX][newY].figure != null){
-                            if (w.field[newX][newY].figure.color != this.color){
-                                posmoves.push({x:newX,y:newY});
+                possibleMoves(x,y){
+                    let results = [];
+                    function possibleMovesInLine(xIndex, yIndex, testFunction){
+                        for(let i = 0; testFunction(i); i++){
+                            let position = {
+                                x: xIndex(i),
+                                y: yIndex(i)
                             }
-                            return true;
-                        }else{
-                            posmoves.push({x:newX,y:newY});
-                            return false;
-                        }
-                    };
-                    for(let i = 1; X + i < 8 && Y + i < 8; i++){
-                        if (pieceCheck(X+i,Y+i)){
-                            break;
+                            if(this.piece.isOnBoard(xIndex(i),yIndex(i))){
+                                if(!this.piece.isSameColor(xIndex(i),yIndex(i))){
+                                    result.push(position);
+                                }
+                                break;
+                            }
+                            result.push(position);
                         }
                     }
-                    for(let i = 1;X - i >= 0 && Y - i >= 0; i++){
-                        if (pieceCheck(X-i,Y-i)){
-                            break;
-                        }
-                    }
-                    for(let i = 1; X - i >= 0 && Y + i < 8; i++){
-                        if (pieceCheck(X-i,Y+i)){
-                            break;
-                        }
-                    }
-                    for(let i = 1; X + i < 8 && Y - i >= 0; i++){
-                        if (pieceCheck(X+i,Y-i)){
-                            break;
-                        }
-                    }
-                    for(let i = 1; X+i < 8; i++){
-                        if (pieceCheck(X+i,Y)){
-                            break;
-                        }
-                    }
-                    for(let i = 1; Y+i < 8; i++){
-                        if (pieceCheck(X,Y+i)){
-                            break;
-                        }
-                    }
-                    for(let i = 1; X-i >= 0; i++){
-                        if (pieceCheck(X-i,Y)){
-                            break;
-                        }
-                    }
-                    for(let i = 1; Y-i >= 0; i++){
-                        if (pieceCheck(X,Y-i)){
-                            break;
-                        }
-                    }
-                    return posmoves;
+
+                    possibleMovesInLine(
+                        i => x + i,
+                        i => y + i,
+                        i => x + i < 8 && y + i < 8
+                    );
+
+                    possibleMovesInLine(
+                        i => x - i,
+                        i => y - i,
+                        i => x - i >= 0 && y - i >= 0
+                    );
+
+                    possibleMovesInLine(
+                        i => x + i,
+                        i => y - i,
+                        i => x + i < 8 && y - i >= 0
+                    );
+
+                    possibleMovesInLine(
+                        i => x - i,
+                        i => y + i,
+                        i => x - i >= 0 && y + i < 8
+                    );
+
+                    possibleMovesInline(
+                        i => x + i,
+                        i => y,
+                        i => x + i < 8
+                    );
+
+                    possibleMovesInline(
+                        i => x - i,
+                        i => y,
+                        i => x - i >= 0
+                    );
+
+                    possibleMovesInline(
+                        i => x,
+                        i => y + i,
+                        i => y + i < 8
+                    );
+
+                    possibleMovesInline(
+                        i => x,
+                        i => y - i,
+                        i => y - i >= 0
+                    );
+
+                    return result;
                 }
 
-                display(X,Y,scale){
-                    c.fillStyle = this.color;
-                    c.fillRect((X + 15) * scale,
-                               (Y + 45) * scale,
+                display(x,y,scale){
+                    c.fillStyle = this.piece.color;
+                    c.fillRect((x + 15) * scale,
+                               (y + 45) * scale,
                                80,
                                10);
-                    c.fillRect((X + 45) * scale,
-                               (Y + 15) * scale,
+                    c.fillRect((x + 45) * scale,
+                               (y + 15) * scale,
                                10,
                                80);
                     c.beginPath();
-                    c.arc((X + 50) * scale,
-                          (Y + 50) * scale,
-                          (this.size/3) * scale,
+                    c.arc((x + 50) * scale,
+                          (y + 50) * scale,
+                          (this.piece.size/3) * scale,
                           0,
                           2 * Math.PI);
                     c.fill();
@@ -399,7 +428,7 @@
                 }
             }
 
-            class Square{
+            class Tile{
 
                 constructor(Xnum,Ynum,Figure) {
                     this.X = Xnum * 100;
@@ -446,20 +475,20 @@
                 }//          fills the field with squares and their figures
 
                 backRow(color,y){
-                        return  [new Square(0,y,new Rook(color,this.figureSize)),
-                                new Square(1,y,new Knight(color,this.figureSize)),
-                                new Square(2,y,new Bishop(color,this.figureSize)),
-                                new Square(3,y,new Queen(color,this.figureSize)),
-                                new Square(4,y,new King(color,this.figureSize)),
-                                new Square(5,y,new Bishop(color,this.figureSize)),
-                                new Square(6,y,new Knight(color,this.figureSize)),
-                                new Square(7,y,new Rook(color,this.figureSize))];
+                        return  [new Tile(0,y,new Rook(color,this.figureSize)),
+                                new Tile(1,y,new Knight(color,this.figureSize)),
+                                new Tile(2,y,new Bishop(color,this.figureSize)),
+                                new Tile(3,y,new Queen(color,this.figureSize)),
+                                new Tile(4,y,new King(color,this.figureSize)),
+                                new Tile(5,y,new Bishop(color,this.figureSize)),
+                                new Tile(6,y,new Knight(color,this.figureSize)),
+                                new Tile(7,y,new Rook(color,this.figureSize))];
                 }
 
                 pawnRow(color,y){
                     let row = []
                     for (let x = 0; x < 8; x++){
-                        row.push(new Square(x,y,new Pawn(color,this.figureSize)));
+                        row.push(new Tile(x,y,new Pawn(color,this.figureSize)));
                     }
                     return row;
                 }
@@ -467,7 +496,7 @@
                 emptyRow(y){
                     let row = []
                     for (let x = 0; x < 8; x++){
-                        row.push(new Square(x,y,null));
+                        row.push(new Tile(x,y,null));
                     }
                     return row;
                 }
