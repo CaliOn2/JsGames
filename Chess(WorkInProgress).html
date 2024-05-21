@@ -549,7 +549,7 @@
                     }
                 }
 
-                movePiece(x,x,newX,newY){
+                movePiece(x,y,newX,newY){
                     if (this.field[x][y].Figure != null){
                         if (newX < 8 && newX >= 0 && newY < 8 && newY >= 0){
                             if(this.field[x][y].Figure.move(x,y,newX,newY)){
