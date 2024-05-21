@@ -88,20 +88,20 @@
                             return false;
                         }
                     };
-                    for(i = 1; X+i < 8; i++){
+                    for(let i = 1; X+i < 8; i++){
                         if (pieceCheck(X+i,Y)){
                             break;
                         }
-                    for(i = 1; Y+i < 8; i++)
+                    for(let i = 1; Y+i < 8; i++)
                         if (pieceCheck(X,Y+i)){
                             break;
                         }
                     }
-                    for(i = 1; X-i >= 0; i++){
+                    for(let i = 1; X-i >= 0; i++){
                         if (pieceCheck(X-i,Y)){
                             break;
                         }
-                    for(i = 1; Y-i >= 0; i++)
+                    for(let i = 1; Y-i >= 0; i++)
                         if (pieceCheck(X,Y-i)){
                             break;
                         }
@@ -298,20 +298,20 @@
                             break;
                         }
                     }
-                    for(i = 1; X+i < 8; i++){
+                    for(let i = 1; X+i < 8; i++){
                         if (pieceCheck(X+i,Y)){
                             break;
                         }
-                    for(i = 1; Y+i < 8; i++)
+                    for(let i = 1; Y+i < 8; i++)
                         if (pieceCheck(X,Y+i)){
                             break;
                         }
                     }
-                    for(i = 1; X-i >= 0; i++){
+                    for(let i = 1; X-i >= 0; i++){
                         if (pieceCheck(X-i,Y)){
                             break;
                         }
-                    for(i = 1; Y-i >= 0; i++)
+                    for(let i = 1; Y-i >= 0; i++)
                         if (pieceCheck(X,Y-i)){
                             break;
                         }
@@ -521,10 +521,26 @@
                     }
                 }
 
-                selectPiece(X,Y){
-                    if (this.field[X][Y].Figure != null){
-                        if (X < 8 && X >= 0 && Y < 8 && Y >= 0){
-                            this.field[X][Y].Figure.possibleMoves(X,Y);
+                selectPiece(worldX,worldY){
+                    let subtractorX = worldX % 100;
+                    let X = (worldX-subtractorX)/100;
+                    let subtractorY = worldY % 100;
+                    let Y = (worldY-subtractorY)/100;
+                    if (X < 8 && X >= 0 && Y < 8 && Y >= 0){
+                        if (this.field[X][Y].Figure != null){
+                            let moves = this.field[X][Y].Figure.possibleMoves(X,Y);
+                            console.log(moves);
+                            for (let i = 0; i <= moves.length; i++){
+                                console.log(moves[i]);
+                                c.fillStyle = this.color;
+                                c.beginPath();
+                                c.arc((moves[i].x*100 + 50) * this.scaleValue,
+                                (moves[i].y*100 + 50) * this.scaleValue,
+                                (this.size/2) * this.scaleValue,
+                                0,
+                                2 * Math.PI);
+                                c.fill();
+                            } 
                         }
                     }
                 }
@@ -567,8 +583,8 @@
                 w.displayWorld();
 
                 document.addEventListener(
-                    'click',
-                    e => {w.movePiece(e.clientX - document.body.getBoundingClientRect().left,e.clientY - document.body.getBoundingClientRect().top);}
+                    'pointermove',
+                    e => {w.selectPiece(e.clientX - document.body.getBoundingClientRect().left,e.clientY - document.body.getBoundingClientRect().top);}
                 );
 
                 document.addEventListener(
