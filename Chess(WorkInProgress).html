@@ -136,36 +136,41 @@
 
                 possibleMoves(X,Y){
                     let posmoves = [];
+                    let pieceCheck = function(newX,newY) {
+                        if(w.field[newX][newY].Figure === null || w.field[newX][newY].Figure.color != this.color){
+                            posmoves.push({x:newX,y:newY});
+                        }
+                    };
                     if (X+1 < 8){
                         if (Y+2 < 8){
-                            posmoves.push({x:X+1,y:Y+2});
+                            pieceCheck(X+1,Y+2);
                         }
                         if (y-2 >= 0){
-                            posmoves.push({x:X+1,y:Y-2});
+                            pieceCheck(X+1,Y-2);
                         }
                     }
                     if (X-1 >= 0){
                         if (Y+2 < 8){
-                            posmoves.push({x:X-1,y:Y+2});
+                            pieceCheck(X-1,Y+2);
                         }
                         if (Y-2 >= 0){
-                            posmoves.push({x:X-1,y:Y-2});
+                            pieceCheck(X-1,Y-2);
                         }
                     }
                     if (X+2 < 8){
                         if(Y+1 < 8){
-                            posmoves.push({x:X+2,y:Y+1});
+                            pieceCheck(X+2,Y+1);
                         }
                         if(Y-1 >= 8){
-                            posmoves.push({x:X+2,y:Y-1});
+                            pieceCheck(X+2,Y-1);
                         }
                     }
                     if (X-2 >= 0){
                         if(Y+1 < 8){
-                            posmoves.push({x:X-2,y:Y+1});
+                            pieceCheck(X-2,Y+1);
                         }
                         if(Y-1 >= 0){
-                            posmoves.push({x:X-2,y:Y-1});
+                            pieceCheck(X-2,Y-1);
                         }
                     }
                     return posmoves;
