@@ -354,17 +354,17 @@
 
                 display(x,y,scale){
                     c.fillStyle = this.piece.color;
-                    c.fillRect((x + 15) * scale,
-                               (y + 45) * scale,
-                               80,
-                               10);
-                    c.fillRect((x + 45) * scale,
-                               (y + 15) * scale,
-                               10,
-                               80);
+                    c.fillRect((x + this.piece.size / 16 * 3) * scale,
+                               (y + this.piece.size / 16 * 9) * scale,
+                               this.piece.size,
+                               this.piece.size / 8);
+                    c.fillRect((x + this.piece.size / 16 * 9) * scale,
+                               (y + this.piece.size / 16 * 3) * scale,
+                               this.piece.size / 8,
+                               this.piece.size);
                     c.beginPath();
-                    c.arc((x + 50) * scale,
-                          (y + 50) * scale,
+                    c.arc((x + this.piece.size / 8 * 5) * scale,
+                          (y + this.piece.size / 8 * 5) * scale,
                           (this.piece.size/3) * scale,
                           0,
                           2 * Math.PI);
@@ -375,56 +375,55 @@
 
             class King{
                 constructor(color, size){
-                    this.color = color;
-                    this.size = size;
+                    this.piece = new Piece(color,size);
                 }
 
-                possibleMoves(X,Y){
+                possibleMoves(x,y){
                     let posmoves = [];
-                    function pieceCheck(newX,newY) {
-                        if(w.field[newX][newY].Figure === null 
-                        || w.field[newX][newY].Figure.color != this.color){
-                            posmoves.push({x:newX,y:newY});
+                    function pieceCheck(x,y) {
+                        if(!this.piece.isOnBoard(x,y) 
+                        || !this.piece.isSameColor(x,y)){
+                            posmoves.push({x:x,y:y});
                         }
                     };
 
-                    if(X+1 < 8){
-                        if(Y+1 < 8){
-                            pieceCheck(X+1,Y+1);
+                    if(x + 1 < 8){
+                        if(y + 1 < 8){
+                            pieceCheck(x + 1, y + 1);
                         }
-                        if(Y-1 >= 8){
-                            pieceCheck(X+1,Y-1);
+                        if(y - 1 >= 0){
+                            pieceCheck(x + 1, y - 1);
                         }
-                        pieceCheck(X+1,Y);
+                        pieceCheck(x + 1, y);
                     }
-                    if((X-1 >= 0)){
-                        if(Y+1 < 8){
-                            pieceCheck(X-1,Y+1);
+                    if((x - 1 >= 0)){
+                        if(y + 1 < 8){
+                            pieceCheck(x - 1, y + 1);
                         }
-                        if(Y-1 >= 8){
-                            pieceCheck(X-1,Y-1);
+                        if(y - 1 >= 0){
+                            pieceCheck(x - 1, y - 1);
                         }
-                        pieceCheck(X-1,Y);
+                        pieceCheck(x - 1, y);
                     }
-                    if(Y+1 < 8){
-                        pieceCheck(X,Y+1);
+                    if(y + 1 < 8){
+                        pieceCheck(x, y + 1);
                     }
-                    if(Y-1 >= 8){
-                        pieceCheck(X,Y-1);
+                    if(y - 1 >= 0){
+                        pieceCheck(x, y - 1);
                     }
                     return posmoves;
                 }
 
-                display(X,Y,scale){
+                display(x,y,scale){
                     c.fillStyle = this.color;
-                    c.fillRect((X + 30) * scale,
-                               (Y + 10) * scale,
-                               40,
+                    c.fillRect((x + 30) * scale,
+                               (y + 10) * scale,
+                               this.piece.size/2,
                                85);
-                    c.fillRect((X + 10) * scale,
-                               (Y + 30) * scale,
+                    c.fillRect((x + 10) * scale,
+                               (y + 30) * scale,
                                85,
-                               40);
+                               this.piece.size/2);
                 }
             }
 
