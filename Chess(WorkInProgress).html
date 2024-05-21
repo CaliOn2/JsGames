@@ -77,45 +77,35 @@
 
                 possibleMoves(X,Y){
                     let posmoves = [];
-                    for(i = 1; X+i < 8; i++){
-                        if (w.field[X+i][Y].figure != null){
-                            if (w.field[X+i][Y].figure.color != this.color){
-                                posmoves.push({x:X+i,y:Y});
+                    let pieceCheck = function(newX,newY){
+                        if (w.field[newX][newY].figure != null){
+                            if (w.field[newX][newY].figure.color != this.color){
+                                posmoves.push({x:newX,y:newY});
                             }
-                            break;
+                            return true;
                         }else{
-                            posmoves.push({x:X+i,y:Y});
+                            posmoves.push({x:newX,y:newY});
+                            return false;
+                        }
+                    };
+                    for(i = 1; X+i < 8; i++){
+                        if (pieceCheck(X+i,Y)){
+                            break;
                         }
                     for(i = 1; Y+i < 8; i++)
-                        if (w.field[X][Y+1].figure != null){
-                            if (w.field[X][Y+i].figure.color != this.color){
-                                posmoves.push({x:X,y:Y+i});
-                            }
+                        if (pieceCheck(X,Y+i)){
                             break;
-                        }else{
-                            posmoves.push({x:X,y:Y+i});
                         }
                     }
                     for(i = 1; X-i >= 0; i++){
-                        if (w.field[X-i][Y].figure != null){
-                            if (w.field[X-i][Y].figure.color != this.color){
-                                posmoves.push({x:X-i,y:Y});
-                            }
+                        if (pieceCheck(X-i,Y)){
                             break;
-                        }else{
-                            posmoves.push({x:X-i,y:Y});
                         }
                     for(i = 1; Y-i >= 0; i++)
-                        if (w.field[X][Y-1].figure != null){
-                            if (w.field[X][Y-i].figure.color != this.color){
-                                posmoves.push({x:X,y:Y-i});
-                            }
+                        if (pieceCheck(X,Y-i)){
                             break;
-                        }else{
-                            posmoves.push({x:X,y:Y-i});
                         }
                     }
-                    
                     return posmoves;
                 }
 
@@ -137,7 +127,8 @@
                 possibleMoves(X,Y){
                     let posmoves = [];
                     let pieceCheck = function(newX,newY) {
-                        if(w.field[newX][newY].Figure === null || w.field[newX][newY].Figure.color != this.color){
+                        if(w.field[newX][newY].Figure === null 
+                        || w.field[newX][newY].Figure.color != this.color){
                             posmoves.push({x:newX,y:newY});
                         }
                     };
@@ -201,17 +192,36 @@
 
                 possibleMoves(X,Y){
                     let posmoves = [];
+                    let pieceCheck = function(newX,newY){
+                        if (w.field[newX][newY].figure != null){
+                            if (w.field[newX][newY].figure.color != this.color){
+                                posmoves.push({x:newX,y:newY});
+                            }
+                            return true;
+                        }else{
+                            posmoves.push({x:newX,y:newY});
+                            return false;
+                        }
+                    };
                     for(let i = 1; X + i < 8 && Y + i < 8; i++){
-                        possmoves.push({x:X+i,y:Y+i});
+                        if (pieceCheck(X+i,Y+i)){
+                            break;
+                        }
                     }
                     for(let i = 1;X - i >= 0 && Y - i >= 0; i++){
-                        possmoves.push({x:X+i,y:Y+i});
+                        if (pieceCheck(X-i,Y-i)){
+                            break;
+                        }
                     }
-                    for(let i = 1; X-i >= 0 && Y + i < 8; i++){
-                        possmoves.push({x:X-i,y:Y+i});
+                    for(let i = 1; X - i >= 0 && Y + i < 8; i++){
+                        if (pieceCheck(X-i,Y+i)){
+                            break;
+                        }
                     }
-                    for(let i = 1; X+i < 8 && Y - i >= 0; i++){
-                        possmoves.push({x:X+i,x:Y-i});
+                    for(let i = 1; X + i < 8 && Y - i >= 0; i++){
+                        if (pieceCheck(X+i,Y-i)){
+                            break;
+                        }
                     }
                     return posmoves;
                 }
@@ -257,22 +267,53 @@
 
                 posssibleMoves(X,Y){
                     let posmoves = [];
+                    let pieceCheck = function(newX,newY){
+                        if (w.field[newX][newY].figure != null){
+                            if (w.field[newX][newY].figure.color != this.color){
+                                posmoves.push({x:newX,y:newY});
+                            }
+                            return true;
+                        }else{
+                            posmoves.push({x:newX,y:newY});
+                            return false;
+                        }
+                    };
                     for(let i = 1; X + i < 8 && Y + i < 8; i++){
-                        possmoves.push({x:X+i,y:Y+i});
+                        if (pieceCheck(X+i,Y+i)){
+                            break;
+                        }
                     }
                     for(let i = 1;X - i >= 0 && Y - i >= 0; i++){
-                        possmoves.push({x:X+i,y:Y+i});
+                        if (pieceCheck(X-i,Y-i)){
+                            break;
+                        }
                     }
-                    for(let i = 1; X-i >= 0 && Y + i < 8; i++){
-                        possmoves.push({x:X-i,y:Y+i});
+                    for(let i = 1; X - i >= 0 && Y + i < 8; i++){
+                        if (pieceCheck(X-i,Y+i)){
+                            break;
+                        }
                     }
-                    for(let i = 1; X+i < 8 && Y - i >= 0; i++){
-                        possmoves.push({x:X+i,x:Y-i});
+                    for(let i = 1; X + i < 8 && Y - i >= 0; i++){
+                        if (pieceCheck(X+i,Y-i)){
+                            break;
+                        }
                     }
-                    for(i = 0; i < 8; i++){
-                        if (i,Y != X,i){
-                            posmoves.push({x:i,y:Y});
-                            posmoves.push({x:X,y:i});
+                    for(i = 1; X+i < 8; i++){
+                        if (pieceCheck(X+i,Y)){
+                            break;
+                        }
+                    for(i = 1; Y+i < 8; i++)
+                        if (pieceCheck(X,Y+i)){
+                            break;
+                        }
+                    }
+                    for(i = 1; X-i >= 0; i++){
+                        if (pieceCheck(X-i,Y)){
+                            break;
+                        }
+                    for(i = 1; Y-i >= 0; i++)
+                        if (pieceCheck(X,Y-i)){
+                            break;
                         }
                     }
                     return posmoves;
@@ -307,29 +348,36 @@
 
                 possibleMoves(X,Y){
                     let posmoves = [];
+                    let pieceCheck = function(newX,newY) {
+                        if(w.field[newX][newY].Figure === null 
+                        || w.field[newX][newY].Figure.color != this.color){
+                            posmoves.push({x:newX,y:newY});
+                        }
+                    };
+
                     if(X+1 < 8){
                         if(Y+1 < 8){
-                            posmoves.push({x:X+1,y:Y+1});
+                            pieceCheck(X+1,Y+1);
                         }
                         if(Y-1 >= 8){
-                            posmoves.push({x:X+1,y:Y-1});
+                            pieceCheck(X+1,Y-1);
                         }
-                        posmoves.push({x:X+1,y:Y});
+                        pieceCheck(X+1,Y);
                     }
                     if((X-1 >= 0)){
                         if(Y+1 < 8){
-                            posmoves.push({x:X-1,y:Y+1});
+                            pieceCheck(X-1,Y+1);
                         }
                         if(Y-1 >= 8){
-                            posmoves.push({x:X-1,y:Y-1});
+                            pieceCheck(X-1,Y-1);
                         }
-                        posmoves.push({x:X+-1,y:Y});
+                        pieceCheck(X-1,Y);
                     }
                     if(Y+1 < 8){
-                        posmoves.push({x:X,y:Y+1});
+                        pieceCheck(X,Y+1);
                         }
                     if(Y-1 >= 8){
-                        posmoves.push({x:X,y:Y-1});
+                        pieceCheck(X,Y-1);
                     }
                     return posmoves;
                 }
