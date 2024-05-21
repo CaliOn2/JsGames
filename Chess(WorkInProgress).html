@@ -152,7 +152,7 @@
                     function pieceCheck(x,y) {
                         if(!this.piece.isOnBoard(x,y) 
                         || this.piece.isSameColor(x,y)){
-                            result.push({x:newX,y:newY});
+                            result.push({x:x,y:y});
                         }
                     };
                     if (x+1 < 8){
@@ -284,7 +284,7 @@
                 }
 
                 possibleMoves(x,y){
-                    let results = [];
+                    let result = [];
                     function possibleMovesInLine(xIndex, yIndex, testFunction){
                         for(let i = 0; testFunction(i); i++){
                             let position = {
@@ -379,11 +379,11 @@
                 }
 
                 possibleMoves(x,y){
-                    let posmoves = [];
+                    let result = [];
                     function pieceCheck(x,y) {
                         if(!this.piece.isOnBoard(x,y) 
                         || !this.piece.isSameColor(x,y)){
-                            posmoves.push({x:x,y:y});
+                            result.push({x:x,y:y});
                         }
                     };
 
@@ -411,31 +411,31 @@
                     if(y - 1 >= 0){
                         pieceCheck(x, y - 1);
                     }
-                    return posmoves;
+                    return result;
                 }
 
                 display(x,y,scale){
-                    c.fillStyle = this.color;
-                    c.fillRect((x + 30) * scale,
-                               (y + 10) * scale,
+                    c.fillStyle = this.piece.color;
+                    c.fillRect((x + this.piece.size / 8 * 3) * scale,
+                               (y + this.piece.size / 8) * scale,
                                this.piece.size/2,
-                               85);
-                    c.fillRect((x + 10) * scale,
-                               (y + 30) * scale,
-                               85,
+                               this.piece.size / 16 * 17);
+                    c.fillRect((x + this.piece.size / 8) * scale,
+                               (y + this.piece.size / 8 * 3) * scale,
+                               this.piece.size / 16 * 17,
                                this.piece.size/2);
                 }
             }
 
             class Tile{
 
-                constructor(Xnum,Ynum,Figure) {
-                    this.X = Xnum * 100;
-                    this.Y = Ynum * 100;
+                constructor(xNum,yNum,Figure) {
+                    this.x = xNum * 100;
+                    this.y = yNum * 100;
                     this.Figure = Figure;
                     if (
-                      (Xnum % 2 === 0 && Ynum % 2 === 0) ||
-                      (Xnum % 2 === 1 && Ynum % 2 === 1)){
+                      (xNum % 2 === 0 && yNum % 2 === 0) ||
+                      (xNum % 2 === 1 && yNum % 2 === 1)){
                         this.color = "white";
                     }else{
                         this.color = "black";
@@ -445,14 +445,14 @@
                 display(scale) {
                     c.fillStyle = this.color;
                     c.fillRect(
-                        this.X * scale,
-                        this.Y * scale,
+                        this.x * scale,
+                        this.y * scale,
                         w.squareWidth * scale,
                         w.squareHeight * scale);
                     if (this.Figure != null){
                         console.log("Figure_Output");
-                        this.Figure.display(this.X,
-                                            this.Y,
+                        this.Figure.display(this.x,
+                                            this.y,
                                             scale);
                     }
                 }
