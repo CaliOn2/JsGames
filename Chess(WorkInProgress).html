@@ -547,22 +547,24 @@
                     let y = Math.trunc((worldY / this.scaleValue) / 100);
                     console.log("Coordinates: " + x +","+ y)
                     if (x < 8 && x >= 0 && y < 8 && y >= 0){
+                        this.displayWorld();
                         if (this.field[y][x].figure !== null){
                             console.log("Figure which moves" + this.field[y][x].figure)
                             let moves = this.field[y][x].figure.possibleMoves(x, y);
                             console.log("Amount of moves" + moves.length);
                             for (let i = 0; i <= moves.length-1; i++){
                                 console.log("move inside moves" + moves[i].x + "," + moves[i].y);
-                                c.fillStyle = "blue";
+                                c.fillStyle = "green";
                                 c.beginPath();
                                 c.arc(
                                     (moves[i].x * 100 + 50) * this.scaleValue,
                                     (moves[i].y * 100 + 50) * this.scaleValue,
-                                    (this.figureSize / 2) * this.scaleValue,
+                                    (this.figureSize / 16 * 9) * this.scaleValue,
                                     0,
                                     2 * Math.PI);
                                 c.fill();
-                            } 
+                            }
+                            return moves;
                         }
                     }
                 }
@@ -605,12 +607,12 @@
 
                 document.addEventListener(
                     'pointermove',
-                    e => {w.selectPiece(e.clientX - document.body.getBoundingClientRect().left, e.clientY - document.body.getBoundingClientRect().top);}
+                    e => {w.selectPiece(e.offsetX, e.offsetY);}
                 );
 
                 document.addEventListener(
                     'dblclick',
-                    e => {w.movePiece(e.clientX - document.body.getBoundingClientRect().left, e.clientY - document.body.getBoundingClientRect().top);}
+                    e => {w.movePiece(e.offsetX, e.offsetY);}
                 );
 
                 game();
