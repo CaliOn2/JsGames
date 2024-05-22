@@ -38,36 +38,36 @@
                 }
 
                 possibleMoves(x, y){
-                    let posmoves = [];
+                    let result = [];
                     if (this.piece.color === w.black && y < 7){
                         if (x - 1 >= 0 && this.piece.isOnBoard(x - 1, y + 1) && !this.piece.isSameColor(x - 1, y + 1)){
-                            posmoves.push({x: x - 1, y: y + 1 });
+                            result.push({x: x - 1, y: y + 1 });
                         }
                         if (x + 1 < 8 && this.piece.isOnBoard(x + 1, y + 1) && !this.piece.isSameColor(x + 1, y + 1)){
-                            posmoves.push({x: x + 1, y: y + 1});
+                            result.push({x: x + 1, y: y + 1});
                         }
                         if (!this.piece.isOnBoard(x, y + 1)){
-                            posmoves.push({x: x, y: y + 1});
+                            result.push({x: x, y: y + 1});
                             if (y === 1 && !this.piece.isOnBoard(x, y + 2)){
-                                posmoves.push({x: x, y: y + 2});
+                                result.push({x: x, y: y + 2});
                             }
                         }
                     }
                     if (this.piece.color === w.white && y >= 0){
                         if (x - 1 >= 0 && this.piece.isOnBoard(x - 1, y - 1) && !this.piece.isSameColor(x - 1, y - 1)){
-                            posmoves.push({x: x - 1, y: y - 1});
+                            result.push({x: x - 1, y: y - 1});
                         }
                         if (x + 1 < 8 && this.piece.isOnBoard(x + 1, y - 1) && !this.piece.isSameColor(x + 1, y - 1)){
-                            posmoves.push({x: x + 1, y: y - 1});
+                            result.push({x: x + 1, y: y - 1});
                         }
                         if (!this.piece.isOnBoard(x, y - 1)){
-                            posmoves.push({x: x, y: y - 1});
+                            result.push({x: x, y: y - 1});
                             if (y === 6 && !this.piece.isOnBoard(x, y - 2)){
-                                posmoves.push({x: x, y: y - 2});
+                                result.push({x: x, y: y - 2});
                             }
                         }
                     }
-                    return posmoves;
+                    return result;
                 }
 
                 display(x, y, scale){
@@ -93,8 +93,8 @@
                     function possibleMovesInLine(xIndex, yIndex, testFunction){
                         for (let i = 1; testFunction(i); i++){
                             let position = {
-                                x: xLine(i),
-                                y: yLine(i)
+                                x: xIndex(i),
+                                y: yIndex(i)
                             };
                             if (this.piece.isOnBoard(xIndex(i),yIndex(i))){
                                 if(!this.piece.isSameColor(xIndex(i),yIndex(i))){
@@ -106,25 +106,25 @@
                         }
                     }
 
-                    possibleMovesInline(
+                    possibleMovesInLine(
                         i => x + i,
                         i => y,
                         i => x + i < 8
                     );
 
-                    possibleMovesInline(
+                    possibleMovesInLine(
                         i => x - i,
                         i => y,
                         i => x - i >= 0
                     );
 
-                    possibleMovesInline(
+                    possibleMovesInLine(
                         i => x,
                         i => y + i,
                         i => y + i < 8
                     );
 
-                    possibleMovesInline(
+                    possibleMovesInLine(
                         i => x,
                         i => y - i,
                         i => y - i >= 0
@@ -135,8 +135,8 @@
 
                 display(x, y, scale){
                     c.fillStyle = this.piece.color;
-                    c.fillRect((x + this.piece.size / 16 * 3) * scale,
-                               (y + this.piece.size / 16 * 3) * scale,
+                    c.fillRect((x + this.piece.size / 8) * scale,
+                               (y + this.piece.size / 8) * scale,
                                this.piece.size * scale,
                                this.piece.size * scale);
                 }
@@ -193,14 +193,14 @@
                 display(x, y, scale){
                     c.fillStyle = this.piece.color;
                     c.fillRect((x + this.piece.size / 2) * scale,
-                               (y + this.piece.size / 16 * 3) * scale,
+                               (y + this.piece.size / 8) * scale,
                                this.piece.size / 4 * scale,
                                this.piece.size * scale);
-                    c.fillRect((x + this.piece.size / 16 * 3) * scale,
+                    c.fillRect((x + this.piece.size / 8) * scale,
                                (y + this.piece.size / 8 * 3) * scale,
                                this.piece.size * scale,
                                this.piece.size / 8 * scale);
-                    c.fillRect((x + this.piece.size / 16 * 3) * scale,
+                    c.fillRect((x + this.piece.size / 8) * scale,
                                (y + this.piece.size / 4 * 3) * scale,
                                this.piece.size * scale,
                                this.piece.size / 8 * scale);
@@ -213,7 +213,7 @@
                 }
 
                 possibleMoves(x, y){
-                    result = [];
+                    let result = [];
 
                     function possibleMovesInLine(xIndex, yIndex, testFunction){
                         for(let i = 0; testFunction(i); i++){
@@ -354,12 +354,12 @@
 
                 display(x, y, scale){
                     c.fillStyle = this.piece.color;
-                    c.fillRect((x + this.piece.size / 16 * 3) * scale,
+                    c.fillRect((x + this.piece.size / 8) * scale,
                                (y + this.piece.size / 16 * 9) * scale,
                                this.piece.size * scale,
                                this.piece.size / 8 * scale);
                     c.fillRect((x + this.piece.size / 16 * 9) * scale,
-                               (y + this.piece.size / 16 * 3) * scale,
+                               (y + this.piece.size / 8) * scale,
                                this.piece.size / 8 * scale,
                                this.piece.size * scale);
                     c.beginPath();
@@ -417,10 +417,10 @@
                 display(x, y, scale){
                     c.fillStyle = this.piece.color;
                     c.fillRect((x + this.piece.size / 8 * 3) * scale,
-                               (y + this.piece.size / 8) * scale,
+                               (y + this.piece.size / 32 * 3) * scale,
                                this.piece.size / 2 * scale,
-                               this.piece.size / 16 * 17);
-                    c.fillRect((x + this.piece.size / 8) * scale,
+                               this.piece.size / 16 * 17 * scale);
+                    c.fillRect((x + this.piece.size /  32 * 3) * scale,
                                (y + this.piece.size / 8 * 3) * scale,
                                this.piece.size / 16 * 17 * scale,
                                this.piece.size / 2 * scale);
@@ -524,18 +524,16 @@
                 
 
                 selectPiece(worldX, worldY){
-                    let subtractorX = (worldX / this.scaleValue) % 100;
-                    let x = ((worldX / this.scaleValue) - subtractorX) / 100;
-                    let subtractorY = (worldY / this.scaleValue) % 100;
-                    let y = ((worldY / this.scaleValue) - subtractorY) / 100;
+                    let x = Math.trunc((worldX / this.scaleValue) / 100);
+                    let y = Math.trunc((worldY / this.scaleValue) / 100);
                     console.log("Coordinates: " + x +","+ y)
                     if (x < 8 && x >= 0 && y < 8 && y >= 0){
                         if (this.field[y][x].Figure != null){
-                            console.log(this.field[y][x].Figure)
-                            let moves = this.field[y][x].Figure.possibleMoves(x,y);
-                            console.log(moves);
-                            for (let i = 0; i <= moves.length; i++){
-                                console.log(moves[i]);
+                            console.log("Figure which moves" + this.field[y][x].Figure)
+                            let moves = this.field[y][x].Figure.possibleMoves(x, y);
+                            console.log("Amount of moves" + moves.length);
+                            for (let i = 0; i <= moves.length-1; i++){
+                                console.log("move inside moves" + moves[i]);
                                 c.fillStyle = "Green";
                                 c.beginPath();
                                 c.arc((moves[i].x * 100 + 50) * this.scaleValue,
