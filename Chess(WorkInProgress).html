@@ -24,11 +24,13 @@
                     this.size = size;
                 }
                 isOnBoard(x, y){
-                    return w.field[y][x].figure != null;
+                    console.log(w.field[y][x].Figure + "," + x + "," + y);
+                    return w.field[y][x].Figure !== null;
                 }
 
                 isSameColor(x, y){
-                    return w.field[y][x].figure.piece.color === this.color;
+                    console.log("x and Why: " + x + "," + y);
+                    return w.field[y][x].Figure.piece.color === this.color;
                 }
             }
 
@@ -53,6 +55,7 @@
                             }
                         }
                     }
+
                     if (this.piece.color === w.white && y >= 0){
                         if (x - 1 >= 0 && this.piece.isOnBoard(x - 1, y - 1) && !this.piece.isSameColor(x - 1, y - 1)){
                             result.push({x: x - 1, y: y - 1});
@@ -96,8 +99,8 @@
                                 x: xIndex(i),
                                 y: yIndex(i)
                             };
-                            if (piece.isOnBoard(xIndex(i),yIndex(i))){
-                                if(!piece.isSameColor(xIndex(i),yIndex(i))){
+                            if (piece.isOnBoard(xIndex(i), yIndex(i))){
+                                if(!piece.isSameColor(xIndex(i), yIndex(i))){
                                     result.push(position);
                                 }
                                 break;
@@ -145,7 +148,7 @@
                                this.piece.size * scale);
                 }
             }
-
+            1,2
             class Knight{
                 constructor(color, size){
                     this.piece = new Piece(color, size);
@@ -155,11 +158,11 @@
                     let result = [];
                     function pieceCheck(x, y, piece) {
                         if(!piece.isOnBoard(x, y) 
-                        || piece.isSameColor(x, y)){
+                        || !piece.isSameColor(x, y)){
                             result.push({x: x, y: y});
                         }
                     };
-                    if (x+  1 < 8){
+                    if (x + 1 < 8){
                         if (y + 2 < 8){
                             pieceCheck(x + 1, y + 2, this.piece);
                         }
@@ -179,7 +182,7 @@
                         if(y + 1 < 8){
                             pieceCheck(x + 2, y + 1, this.piece);
                         }
-                        if(y - 1 >= 8){
+                        if(y - 1 >= 0){
                             pieceCheck(x + 2, y - 1, this.piece);
                         }
                     }
@@ -544,7 +547,7 @@
                     let y = Math.trunc((worldY / this.scaleValue) / 100);
                     console.log("Coordinates: " + x +","+ y)
                     if (x < 8 && x >= 0 && y < 8 && y >= 0){
-                        if (this.field[y][x].Figure != null){
+                        if (this.field[y][x].Figure !== null){
                             console.log("Figure which moves" + this.field[y][x].Figure)
                             let moves = this.field[y][x].Figure.possibleMoves(x, y);
                             console.log("Amount of moves" + moves.length);
