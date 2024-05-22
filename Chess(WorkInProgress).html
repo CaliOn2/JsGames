@@ -90,14 +90,14 @@
                 possibleMoves(x, y){
                     let result = [];
 
-                    function possibleMovesInLine(xIndex, yIndex, testFunction){
+                    function possibleMovesInLine(xIndex, yIndex, testFunction, piece){
                         for (let i = 1; testFunction(i); i++){
                             let position = {
                                 x: xIndex(i),
                                 y: yIndex(i)
                             };
-                            if (this.piece.isOnBoard(xIndex(i),yIndex(i))){
-                                if(!this.piece.isSameColor(xIndex(i),yIndex(i))){
+                            if (piece.isOnBoard(xIndex(i),yIndex(i))){
+                                if(!piece.isSameColor(xIndex(i),yIndex(i))){
                                     result.push(position);
                                 }
                                 break;
@@ -109,25 +109,29 @@
                     possibleMovesInLine(
                         i => x + i,
                         i => y,
-                        i => x + i < 8
+                        i => x + i < 8,
+                        this.piece
                     );
 
                     possibleMovesInLine(
                         i => x - i,
                         i => y,
-                        i => x - i >= 0
+                        i => x - i >= 0,
+                        this.piece
                     );
 
                     possibleMovesInLine(
                         i => x,
                         i => y + i,
-                        i => y + i < 8
+                        i => y + i < 8,
+                        this.piece
                     );
 
                     possibleMovesInLine(
                         i => x,
                         i => y - i,
-                        i => y - i >= 0
+                        i => y - i >= 0,
+                        this.piece
                     );
 
                     return result;
@@ -149,42 +153,42 @@
 
                 possibleMoves(x, y){
                     let result = [];
-                    function pieceCheck(x, y) {
-                        if(!this.piece.isOnBoard(x, y) 
-                        || this.piece.isSameColor(x, y)){
+                    function pieceCheck(x, y, piece) {
+                        if(!piece.isOnBoard(x, y) 
+                        || piece.isSameColor(x, y)){
                             result.push({x: x, y: y});
                         }
                     };
-                    if (x+1 < 8){
-                        if (y+2 < 8){
-                            pieceCheck(x+1,y+2);
+                    if (x+  1 < 8){
+                        if (y + 2 < 8){
+                            pieceCheck(x + 1, y + 2, this.piece);
                         }
-                        if (y-2 >= 0){
-                            pieceCheck(x+1,y-2);
-                        }
-                    }
-                    if (x-1 >= 0){
-                        if (y+2 < 8){
-                            pieceCheck(x-1,y+2);
-                        }
-                        if (y-2 >= 0){
-                            pieceCheck(x-1,y-2);
+                        if (y - 2 >= 0){
+                            pieceCheck(x + 1, y - 2, this.piece);
                         }
                     }
-                    if (x+2 < 8){
-                        if(y+1 < 8){
-                            pieceCheck(x+2,y+1);
+                    if (x - 1 >= 0){
+                        if (y + 2 < 8){
+                            pieceCheck(x - 1, y + 2, this.piece);
                         }
-                        if(y-1 >= 8){
-                            pieceCheck(x+2,y-1);
+                        if (y - 2 >= 0){
+                            pieceCheck(x - 1, y - 2, this.piece);
                         }
                     }
-                    if (x-2 >= 0){
-                        if(y+1 < 8){
-                            pieceCheck(x-2,y+1);
+                    if (x + 2 < 8){
+                        if(y + 1 < 8){
+                            pieceCheck(x + 2, y + 1, this.piece);
                         }
-                        if(Y-1 >= 0){
-                            pieceCheck(x-2,y-1);
+                        if(y - 1 >= 8){
+                            pieceCheck(x + 2, y - 1, this.piece);
+                        }
+                    }
+                    if (x - 2 >= 0){
+                        if(y + 1 < 8){
+                            pieceCheck(x - 2, y + 1, this.piece);
+                        }
+                        if(y - 1 >= 0){
+                            pieceCheck(x - 2, y - 1, this.piece);
                         }
                     }
                     return result;
@@ -215,14 +219,14 @@
                 possibleMoves(x, y){
                     let result = [];
 
-                    function possibleMovesInLine(xIndex, yIndex, testFunction){
+                    function possibleMovesInLine(xIndex, yIndex, testFunction, piece){
                         for(let i = 0; testFunction(i); i++){
                             let position = {
                                 x: xIndex(i),
                                 y: yIndex(i)
                             }
-                            if(this.piece.isOnBoard(xIndex(i), yIndex(i))){
-                                if(!this.piece.isSameColor(xIndex(i), yIndex(i))){
+                            if(piece.isOnBoard(xIndex(i), yIndex(i))){
+                                if(!piece.isSameColor(xIndex(i), yIndex(i))){
                                     result.push(position);
                                 }
                                 break;
@@ -234,25 +238,29 @@
                     possibleMovesInLine(
                         i => x + i,
                         i => y + i,
-                        i => x + i < 8 && y + i < 8
+                        i => x + i < 8 && y + i < 8,
+                        this.piece
                     );
 
                     possibleMovesInLine(
                         i => x - i,
                         i => y - i,
-                        i => x - i >= 0 && y - i >= 0
+                        i => x - i >= 0 && y - i >= 0,
+                        this.piece
                     );
 
                     possibleMovesInLine(
                         i => x + i,
                         i => y - i,
-                        i => x + i < 8 && y - i >= 0
+                        i => x + i < 8 && y - i >= 0,
+                        this.piece
                     );
 
                     possibleMovesInLine(
                         i => x - i,
                         i => y + i,
-                        i => x - i >= 0 && y + i < 8
+                        i => x - i >= 0 && y + i < 8,
+                        this.piece
                     );
 
                     return result;
@@ -285,14 +293,14 @@
 
                 possibleMoves(x, y){
                     let result = [];
-                    function possibleMovesInLine(xIndex, yIndex, testFunction){
+                    function possibleMovesInLine(xIndex, yIndex, testFunction, piece){
                         for(let i = 0; testFunction(i); i++){
                             let position = {
                                 x: xIndex(i),
                                 y: yIndex(i)
                             }
-                            if(this.piece.isOnBoard(xIndex(i), yIndex(i))){
-                                if(!this.piece.isSameColor(xIndex(i), yIndex(i))){
+                            if(piece.isOnBoard(xIndex(i), yIndex(i))){
+                                if(!piece.isSameColor(xIndex(i), yIndex(i))){
                                     result.push(position);
                                 }
                                 break;
@@ -304,49 +312,57 @@
                     possibleMovesInLine(
                         i => x + i,
                         i => y + i,
-                        i => x + i < 8 && y + i < 8
+                        i => x + i < 8 && y + i < 8,
+                        this.piece
                     );
 
                     possibleMovesInLine(
                         i => x - i,
                         i => y - i,
-                        i => x - i >= 0 && y - i >= 0
+                        i => x - i >= 0 && y - i >= 0,
+                        this.piece
                     );
 
                     possibleMovesInLine(
                         i => x + i,
                         i => y - i,
-                        i => x + i < 8 && y - i >= 0
+                        i => x + i < 8 && y - i >= 0,
+                        this.piece
                     );
 
                     possibleMovesInLine(
                         i => x - i,
                         i => y + i,
-                        i => x - i >= 0 && y + i < 8
+                        i => x - i >= 0 && y + i < 8,
+                        this.piece
                     );
 
-                    possibleMovesInline(
+                    possibleMovesInLine(
                         i => x + i,
                         i => y,
-                        i => x + i < 8
+                        i => x + i < 8,
+                        this.piece
                     );
 
-                    possibleMovesInline(
+                    possibleMovesInLine(
                         i => x - i,
                         i => y,
-                        i => x - i >= 0
+                        i => x - i >= 0,
+                        this.piece
                     );
 
-                    possibleMovesInline(
+                    possibleMovesInLine(
                         i => x,
                         i => y + i,
-                        i => y + i < 8
+                        i => y + i < 8,
+                        this.piece
                     );
 
-                    possibleMovesInline(
+                    possibleMovesInLine(
                         i => x,
                         i => y - i,
-                        i => y - i >= 0
+                        i => y - i >= 0,
+                        this.piece
                     );
 
                     return result;
@@ -380,36 +396,36 @@
 
                 possibleMoves(x, y){
                     let result = [];
-                    function pieceCheck(x, y) {
-                        if(!this.piece.isOnBoard(x, y) 
-                        || !this.piece.isSameColor(x, y)){
+                    function pieceCheck(x, y, piece) {
+                        if(!piece.isOnBoard(x, y) 
+                        || !piece.isSameColor(x, y)){
                             result.push({x: x, y: y});
                         }
                     };
 
                     if(x + 1 < 8){
                         if(y + 1 < 8){
-                            pieceCheck(x + 1, y + 1);
+                            pieceCheck(x + 1, y + 1, this.piece);
                         }
                         if(y - 1 >= 0){
-                            pieceCheck(x + 1, y - 1);
+                            pieceCheck(x + 1, y - 1, this.piece);
                         }
-                        pieceCheck(x + 1, y);
+                        pieceCheck(x + 1, y, this.piece);
                     }
                     if((x - 1 >= 0)){
                         if(y + 1 < 8){
-                            pieceCheck(x - 1, y + 1);
+                            pieceCheck(x - 1, y + 1, this.piece);
                         }
                         if(y - 1 >= 0){
-                            pieceCheck(x - 1, y - 1);
+                            pieceCheck(x - 1, y - 1, this.piece);
                         }
-                        pieceCheck(x - 1, y);
+                        pieceCheck(x - 1, y, this.piece);
                     }
                     if(y + 1 < 8){
-                        pieceCheck(x, y + 1);
+                        pieceCheck(x, y + 1, this.piece);
                     }
                     if(y - 1 >= 0){
-                        pieceCheck(x, y - 1);
+                        pieceCheck(x, y - 1, this.piece);
                     }
                     return result;
                 }
