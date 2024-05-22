@@ -24,13 +24,13 @@
                     this.size = size;
                 }
                 isOnBoard(x, y){
-                    console.log(w.field[y][x].Figure + "," + x + "," + y);
-                    return w.field[y][x].Figure !== null;
+                    console.log(w.field[y][x].figure + "," + x + "," + y);
+                    return w.field[y][x].figure !== null;
                 }
 
                 isSameColor(x, y){
                     console.log("x and Why: " + x + "," + y);
-                    return w.field[y][x].Figure.piece.color === this.color;
+                    return w.field[y][x].figure.piece.color === this.color;
                 }
             }
 
@@ -448,10 +448,10 @@
 
             class Tile{
 
-                constructor(xNum,yNum,Figure) {
+                constructor(xNum,yNum,figure) {
                     this.x = xNum * 100;
                     this.y = yNum * 100;
-                    this.Figure = Figure;
+                    this.figure = figure;
                     if (
                       (xNum % 2 === 0 && yNum % 2 === 0) ||
                       (xNum % 2 === 1 && yNum % 2 === 1)){
@@ -468,9 +468,9 @@
                         this.y * scale,
                         w.squareWidth * scale,
                         w.squareHeight * scale);
-                    if (this.Figure != null){
+                    if (this.figure != null){
                         console.log("Figure_Output");
-                        this.Figure.display(this.x,
+                        this.figure.display(this.x,
                                             this.y,
                                             scale);
                     }
@@ -547,19 +547,20 @@
                     let y = Math.trunc((worldY / this.scaleValue) / 100);
                     console.log("Coordinates: " + x +","+ y)
                     if (x < 8 && x >= 0 && y < 8 && y >= 0){
-                        if (this.field[y][x].Figure !== null){
-                            console.log("Figure which moves" + this.field[y][x].Figure)
-                            let moves = this.field[y][x].Figure.possibleMoves(x, y);
+                        if (this.field[y][x].figure !== null){
+                            console.log("Figure which moves" + this.field[y][x].figure)
+                            let moves = this.field[y][x].figure.possibleMoves(x, y);
                             console.log("Amount of moves" + moves.length);
                             for (let i = 0; i <= moves.length-1; i++){
-                                console.log("move inside moves" + moves[i]);
-                                c.fillStyle = "Green";
+                                console.log("move inside moves" + moves[i].x + "," + moves[i].y);
+                                c.fillStyle = "blue";
                                 c.beginPath();
-                                c.arc((moves[i].x * 100 + 50) * this.scaleValue,
-                                (moves[i].y * 100 + 50) * this.scaleValue,
-                                (this.size / 2) * this.scaleValue,
-                                0,
-                                2 * Math.PI);
+                                c.arc(
+                                    (moves[i].x * 100 + 50) * this.scaleValue,
+                                    (moves[i].y * 100 + 50) * this.scaleValue,
+                                    (this.size / 2) * this.scaleValue,
+                                    0,
+                                    2 * Math.PI);
                                 c.fill();
                             } 
                         }
@@ -567,11 +568,11 @@
                 }
 
                 movePiece(x, y, newX, newY){
-                    if (this.field[y][x].Figure != null){
+                    if (this.field[y][x].figure != null){
                         if (newX < 8 && newX >= 0 && newY < 8 && newY >= 0){
-                            if(this.field[y][x].Figure.move(x, y, newX, newY)){
-                                this.field[newX][newY].Figure = this.field[y][x].Figure;
-                                this.field[y][x].Figure = null; 
+                            if(this.field[y][x].figure.move(x, y, newX, newY)){
+                                this.field[newX][newY].figure = this.field[y][x].figure;
+                                this.field[y][x].figure = null; 
                             }
                         }
                     }
