@@ -24,11 +24,11 @@
                     this.size = size;
                 }
                 isOnBoard(x, y){
-                    return w.field[x][y].figure != null;
+                    return w.field[y][x].figure != null;
                 }
 
                 isSameColor(x, y){
-                    return w.field[x][y].figure.piece.color === this.color;
+                    return w.field[y][x].figure.piece.color === this.color;
                 }
             }
 
