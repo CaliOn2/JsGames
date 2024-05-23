@@ -223,7 +223,7 @@
                     let result = [];
 
                     function possibleMovesInLine(xIndex, yIndex, testFunction, piece){
-                        for(let i = 0; testFunction(i); i++){
+                        for(let i = 1; testFunction(i); i++){
                             let position = {
                                 x: xIndex(i),
                                 y: yIndex(i)
@@ -297,7 +297,7 @@
                 possibleMoves(x, y){
                     let result = [];
                     function possibleMovesInLine(xIndex, yIndex, testFunction, piece){
-                        for(let i = 0; testFunction(i); i++){
+                        for(let i = 1; testFunction(i); i++){
                             let position = {
                                 x: xIndex(i),
                                 y: yIndex(i)
@@ -481,6 +481,8 @@
 
                 constructor() {
                     this.field = [];
+                    this.moves = [];
+                    this.activePiece = {x:NaN ,y:NaN};
                     this.maxX = 800;
                     this.maxY = 800;
                     this.figureSize = 80;
@@ -545,40 +547,36 @@
                 selectPiece(worldX, worldY){
                     let x = Math.trunc((worldX / this.scaleValue) / 100);
                     let y = Math.trunc((worldY / this.scaleValue) / 100);
-                    console.log("Coordinates: " + x +","+ y)
                     if (x < 8 && x >= 0 && y < 8 && y >= 0){
+                        for (let n = 0; n < this.moves.length; n++){
+                            if(this.moves[n].x === x && this.moves[n].y === y){
+                                this.field[y][x].figure = this.field[this.activePiece.y][this.activePiece.x].figure;
+                                this.field[y][x].display(this.scaleValue);
+                                this.field[this.activePiece.y][this.activePiece.x].figure = null;
+                                this.field[this.activePiece.y][this.activePiece.x].display(this.scaleValue);
+                            }
+                        }
                         this.displayWorld();
                         if (this.field[y][x].figure !== null){
-                            console.log("Figure which moves" + this.field[y][x].figure)
-                            let moves = this.field[y][x].figure.possibleMoves(x, y);
-                            console.log("Amount of moves" + moves.length);
-                            for (let i = 0; i <= moves.length-1; i++){
-                                console.log("move inside moves" + moves[i].x + "," + moves[i].y);
+                            this.moves = this.field[y][x].figure.possibleMoves(x, y);
+                            for (let i = 0; i < this.moves.length; i++){
                                 c.fillStyle = "green";
                                 c.beginPath();
                                 c.arc(
-                                    (moves[i].x * 100 + 50) * this.scaleValue,
-                                    (moves[i].y * 100 + 50) * this.scaleValue,
+                                    (this.moves[i].x * 100 + 50) * this.scaleValue,
+                                    (this.moves[i].y * 100 + 50) * this.scaleValue,
                                     (this.figureSize / 16 * 9) * this.scaleValue,
                                     0,
                                     2 * Math.PI);
                                 c.fill();
+                                if(this.field[this.moves[i].y][this.moves[i].x].figure !== null){
+                                    this.field[this.moves[i].y][this.moves[i].x].figure.display(this.moves[i].x * 100, this.moves[i].y * 100, this.scaleValue);
+                                }
                             }
-                            return moves;
+                            this.activePiece = {x: x, y: y};
                         }
+                        return false;
                     }
-                }
-
-                movePiece(x, y, newX, newY){
-                    if (this.field[y][x].figure != null){
-                        if (newX < 8 && newX >= 0 && newY < 8 && newY >= 0){
-                            if(this.field[y][x].figure.move(x, y, newX, newY)){
-                                this.field[newX][newY].figure = this.field[y][x].figure;
-                                this.field[y][x].figure = null; 
-                            }
-                        }
-                    }
-
                 }
 
                 displayWorld(){
@@ -606,7 +604,7 @@
                 w.displayWorld();
 
                 document.addEventListener(
-                    'pointermove',
+                    'pointerdown',
                     e => {w.selectPiece(e.offsetX, e.offsetY);}
                 );
 
