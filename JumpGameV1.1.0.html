@@ -227,7 +227,7 @@
                     e => w.player.setPosition(e.offsetX)
                 );
 
-                canvas.addEventListener(
+                document.addEventListener(
                     'keydown',
                     e => {
                         if (e.key === ' ') w.player.jump(w.platformDif, w.platforms);
