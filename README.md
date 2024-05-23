@@ -3,7 +3,7 @@ A Collection of Js Games to allow people to easily play and modify games cross-p
 
 <b>Current Functional Games:</b>
 - JumpGame: A vertical parcour game
-- Chess(Still Missing Casteling)
+- Chess(Still Missing Casteling and En passant)
 
 
 
