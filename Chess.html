@@ -557,7 +557,11 @@
                     if(this.field[newY][newX].figure != null && this.field[newY][newX].figure.constructor.name === "King"){
                         this.gameOver(this.field[oldY][oldX].figure.piece.color);
                     }
-                    this.field[newY][newX].figure = this.field[oldY][oldX].figure;
+                    if(this.field[oldY][oldX].figure.constructor.name === "Pawn" && newY === 7 || newY === 0){
+                        this.field[newY][newX].figure =  new Queen(this.field[oldY][oldX].figure.piece.color, this.field[oldY][oldX].figure.piece.size);
+                    }else{
+                        this.field[newY][newX].figure = this.field[oldY][oldX].figure;
+                    }
                     this.field[newY][newX].display(this.scaleValue);
                     this.field[oldY][oldX].figure = null;
                     this.field[oldY][oldX].display(this.scaleValue);
