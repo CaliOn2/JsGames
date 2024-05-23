@@ -24,12 +24,10 @@
                     this.size = size;
                 }
                 isOnBoard(x, y){
-                    console.log(w.field[y][x].figure + "," + x + "," + y);
                     return w.field[y][x].figure !== null;
                 }
 
                 isSameColor(x, y){
-                    console.log("x and Why: " + x + "," + y);
                     return w.field[y][x].figure.piece.color === this.color;
                 }
             }
@@ -56,7 +54,7 @@
                         }
                     }
 
-                    if (this.piece.color === w.white && y >= 0){
+                    if (this.piece.color === w.white && y > 0){
                         if (x - 1 >= 0 && this.piece.isOnBoard(x - 1, y - 1) && !this.piece.isSameColor(x - 1, y - 1)){
                             result.push({x: x - 1, y: y - 1});
                         }
@@ -469,7 +467,6 @@
                         w.squareWidth * scale,
                         w.squareHeight * scale);
                     if (this.figure != null){
-                        console.log("Figure_Output");
                         this.figure.display(this.x,
                                             this.y,
                                             scale);
@@ -542,53 +539,75 @@
                         }
                     }
                 }
-                
 
-                selectPiece(worldX, worldY){
+                gameOver(color){
+                    c.fillText(
+                        `Winner: ${color}`,
+                        100 * this.scaleValue,
+                        100 * this.scaleValue
+                    );
+                }
+
+                movePiece(oldX, oldY, newX, newY){
+                    if(this.field[newY][newX].figure != null && this.field[newY][newX].figure.constructor.name === "King"){
+                        console.log("The King Has Been Slain")
+                        this.gameOver(this.field[oldY][oldX].figure.piece.color);
+                    }
+                    this.field[newY][newX].figure = this.field[oldY][oldX].figure;
+                    this.field[newY][newX].display(this.scaleValue);
+                    this.field[oldY][oldX].figure = null;
+                    this.field[oldY][oldX].display(this.scaleValue);
+                }
+
+                showPossibleMoves(){
+                    for (let i = 0; i < this.moves.length; i++){
+                        c.fillStyle = "green";
+                        c.beginPath();
+                        c.arc(
+                            (this.moves[i].x * 100 + 50) * this.scaleValue,
+                            (this.moves[i].y * 100 + 50) * this.scaleValue,
+                            (this.figureSize / 16 * 9) * this.scaleValue,
+                            0,
+                            2 * Math.PI);
+                            c.fill();
+                            if(this.field[this.moves[i].y][this.moves[i].x].figure !== null){
+                                this.field[this.moves[i].y][this.moves[i].x].figure.display(this.moves[i].x * 100, this.moves[i].y * 100, this.scaleValue);
+                            }
+                        }
+                }
+
+                pieceMovement(worldX, worldY){
                     let x = Math.trunc((worldX / this.scaleValue) / 100);
                     let y = Math.trunc((worldY / this.scaleValue) / 100);
+
                     if (x < 8 && x >= 0 && y < 8 && y >= 0){
                         for (let n = 0; n < this.moves.length; n++){
                             if(this.moves[n].x === x && this.moves[n].y === y){
-                                this.field[y][x].figure = this.field[this.activePiece.y][this.activePiece.x].figure;
-                                this.field[y][x].display(this.scaleValue);
-                                this.field[this.activePiece.y][this.activePiece.x].figure = null;
-                                this.field[this.activePiece.y][this.activePiece.x].display(this.scaleValue);
+                                this.movePiece(this.activePiece.x, this.activePiece.y, x, y);
                             }
                         }
                         this.displayWorld();
                         if (this.field[y][x].figure !== null){
-                            this.moves = this.field[y][x].figure.possibleMoves(x, y);
-                            for (let i = 0; i < this.moves.length; i++){
-                                c.fillStyle = "green";
-                                c.beginPath();
-                                c.arc(
-                                    (this.moves[i].x * 100 + 50) * this.scaleValue,
-                                    (this.moves[i].y * 100 + 50) * this.scaleValue,
-                                    (this.figureSize / 16 * 9) * this.scaleValue,
-                                    0,
-                                    2 * Math.PI);
-                                c.fill();
-                                if(this.field[this.moves[i].y][this.moves[i].x].figure !== null){
-                                    this.field[this.moves[i].y][this.moves[i].x].figure.display(this.moves[i].x * 100, this.moves[i].y * 100, this.scaleValue);
-                                }
-                            }
                             this.activePiece = {x: x, y: y};
+                            this.moves = this.field[y][x].figure.possibleMoves(x, y);
+                            this.showPossibleMoves();
+                        }else{
+                            this.moves = [];
                         }
-                        return false;
                     }
                 }
 
                 displayWorld(){
                     for (let x = 0; x < 8; x++){
                         for (let y = 0; y < 8; y++){
-                            console.log("X and Y :" + x + y);
                             this.field[y][x].display(this.scaleValue);
                         }
                     }
                 }
 
             }
+
+
 
             const w = new World();
 
@@ -601,16 +620,12 @@
                 // sets canvas width and height
                 d.width = d.clientWidth;
                 d.height = d.clientHeight;
+                c.font = `${30 * w.scaleValue}px Arial`;
                 w.displayWorld();
 
                 document.addEventListener(
                     'pointerdown',
-                    e => {w.selectPiece(e.offsetX, e.offsetY);}
-                );
-
-                document.addEventListener(
-                    'dblclick',
-                    e => {w.movePiece(e.offsetX, e.offsetY);}
+                    e => {w.pieceMovement(e.offsetX, e.offsetY);}
                 );
 
                 game();
