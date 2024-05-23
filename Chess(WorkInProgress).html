@@ -479,7 +479,6 @@
                 constructor() {
                     this.field = [];
                     this.moves = [];
-                    this.activePiece = {x:NaN ,y:NaN};
                     this.maxX = 800;
                     this.maxY = 800;
                     this.figureSize = 80;
@@ -488,6 +487,7 @@
                     this.scaleValue = d.getBoundingClientRect().width / this.maxX;
                     this.black = "#4d2900";
                     this.white = "#fcffa6";
+                    this.activePiece = {x: NaN, y: NaN, color: this.white};
                     this.fillField();
                 }//          fills the field with squares and their figures
 
@@ -541,16 +541,20 @@
                 }
 
                 gameOver(color){
-                    c.fillText(
-                        `Winner: ${color}`,
-                        100 * this.scaleValue,
-                        100 * this.scaleValue
+                    console.log("The King Has Been Slain");
+                    c.clearRect(
+                    0,
+                    0,
+                    d.clientWidth,
+                    d.clientHeight
                     );
+                    c.font = `${80 * this.scaleValue}px serif`;
+                    c.strokeText(`WINNER: ${color}!`, 10 * this.scaleValue, 200 * this.scaleValue);
+                    haveAStroke();
                 }
 
                 movePiece(oldX, oldY, newX, newY){
                     if(this.field[newY][newX].figure != null && this.field[newY][newX].figure.constructor.name === "King"){
-                        console.log("The King Has Been Slain")
                         this.gameOver(this.field[oldY][oldX].figure.piece.color);
                     }
                     this.field[newY][newX].figure = this.field[oldY][oldX].figure;
@@ -584,11 +588,17 @@
                         for (let n = 0; n < this.moves.length; n++){
                             if(this.moves[n].x === x && this.moves[n].y === y){
                                 this.movePiece(this.activePiece.x, this.activePiece.y, x, y);
+                                if(this.activePiece.color === this.white){
+                                    this.activePiece.color = this.black;
+                                }else if(this.activePiece.color === this.black){
+                                    this.activePiece.color = this.white;
+                                }
                             }
                         }
                         this.displayWorld();
-                        if (this.field[y][x].figure !== null){
-                            this.activePiece = {x: x, y: y};
+                        if (this.field[y][x].figure !== null && this.field[y][x].figure.piece.color === this.activePiece.color){
+                            this.activePiece.x = x;
+                            this.activePiece.y = y;
                             this.moves = this.field[y][x].figure.possibleMoves(x, y);
                             this.showPossibleMoves();
                         }else{
@@ -623,7 +633,7 @@
                 c.font = `${30 * w.scaleValue}px Arial`;
                 w.displayWorld();
 
-                document.addEventListener(
+                canvas.addEventListener(
                     'pointerdown',
                     e => {w.pieceMovement(e.offsetX, e.offsetY);}
                 );

@@ -222,12 +222,12 @@
 
                 c.font = `${10 * scaleValue}px Arial`;
 
-                document.addEventListener(
+                canvas.addEventListener(
                     'pointermove',
                     e => w.player.setPosition(e.offsetX)
                 );
 
-                document.addEventListener(
+                canvas.addEventListener(
                     'keydown',
                     e => {
                         if (e.key === ' ') w.player.jump(w.platformDif, w.platforms);
